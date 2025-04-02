@@ -14,9 +14,11 @@ janela=pygame.display.set_mode((1000,700))
 background=pygame.image.load("terra4 700x700 (1).jpg")
 astr1=pygame.image.load("astronauta_rosa-removebg-preview.png").convert()
 astr2=pygame.image.load("astronauta branco.png").convert()
+relogio = pygame.time.Clock()
 janela_aberta=True
+
 while janela_aberta==True:
-    
+    relogio.tick(100)
     janela.blit(astr1,(horiz_astr1,vert_astr1))
     janela.blit(astr2,(horiz_astr2,vert_astr2))
     pygame.display.update()
@@ -27,7 +29,7 @@ while janela_aberta==True:
             # para o astronauta1
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_UP and vert_astr1>0:
-                    vert_astr1=vert_astr1-salto_astr2
+                    vert_astr1=vert_astr1-salto_astr2-100
 
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_DOWN  and vert_astr1<650:
@@ -47,7 +49,7 @@ while janela_aberta==True:
             # para o astronauta 2
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_w and vert_astr2>0:
-                    vert_astr2=vert_astr2-200
+                    vert_astr2=vert_astr2-salto_astr1-100
 
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_s and vert_astr2<650:
@@ -61,7 +63,7 @@ while janela_aberta==True:
                 if event.key==pygame.K_d and horiz_astr2<950:
                     horiz_astr2=horiz_astr2+vel
 
-            janela.fill((0,0,0))
+            
 
 # para para a gente pode colocar um and nao tocando uma hitbox de uma pltaforma
     if vert_astr2<600:
