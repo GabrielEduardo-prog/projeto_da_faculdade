@@ -12,8 +12,8 @@ horiz_astr2=200
 
 janela=pygame.display.set_mode((1000,700))
 background=pygame.image.load("terra4 700x700 (1).jpg")
-astr1=pygame.image.load("astronauta_rosa-removebg-preview.png").convert()
-astr2=pygame.image.load("astronauta branco.png").convert()
+astr1=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
+astr2=pygame.image.load("astronauta branco.png").convert_alpha()
 relogio = pygame.time.Clock()
 janela_aberta=True
 
@@ -71,15 +71,14 @@ while janela_aberta==True:
     if vert_astr1<600:
         vert_astr1=vert_astr1+gravidade
 
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
 
-
+# OQUE PRECISA FAZER: HITBOX
+# OQUE PRECISA FAZER: HITBOX
+# OQUE PRECISA FAZER: HITBOX
+# OQUE PRECISA FAZER: HITBOX
+# OQUE PRECISA FAZER: HITBOX
+# OQUE PRECISA FAZER: HITBOX
+# OQUE PRECISA FAZER: HITBOX
 
 
 
