@@ -3,11 +3,11 @@ pygame.init()
 pygame.display.set_caption("Run to the moon!")
 vert_astr1=200
 horiz_astr1=300
-vel=30
-gravidade=0.5
+vel=5
+gravidade=2.0
 salto_astr1=15
 salto_astr2=15
-vert_astr2=300
+vert_astr2=200
 horiz_astr2=200
 
 janela=pygame.display.set_mode((1000,700))
@@ -87,51 +87,59 @@ while janela_aberta==True:
     janela.blit(background,(0,0))
     
     for event in pygame.event.get():
-               
-            # para o astronauta1
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_UP and vert_astr1>0:
-                    vert_astr1=vert_astr1-salto_astr2-100
+        #fechamento
+        if event.type == pygame.QUIT:
+            janela_aberta = False
 
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_DOWN  and vert_astr1<650:
-                    vert_astr1=vert_astr1+vel
+        if event.type == pygame.KEYDOWN:
+               # Pausar o jogo permite que apertando x pause
+            if event.key == pygame.K_x:
+                menu_jogo()
+# Movimentação dos astronautas 
+            #pulo dos astronautas
+            if event.key == pygame.K_UP and vert_astr1 > 0:
+                  vert_astr1 -= salto_astr2 + 100
+            if event.key == pygame.K_w and vert_astr2 > 0: 
+                  vert_astr2 -= salto_astr1 + 100
+    segurar=pygame.key.get_pressed()
 
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_LEFT and horiz_astr1>0:
-                    horiz_astr1=horiz_astr1-vel
+    #astronauta 1
+    #andar do personagem
+    if segurar[pygame.K_LEFT] and horiz_astr1 > 0:
+        horiz_astr1 -= vel
+    if segurar[pygame.K_RIGHT] and horiz_astr1 < 950:
+        horiz_astr1 += vel
+    if segurar[pygame.K_DOWN] and vert_astr1 < 650:
+        vert_astr1 += vel
+    #para o astronauta 1 nao sair da tela
+    if horiz_astr1 < 0:
+        horiz_astr1 = 0
+    if horiz_astr1 > 950:
+        horiz_astr1 = 950
+    if vert_astr1 < -10:
+         vert_astr1 = -10
+    if vert_astr1 > 635:
+        vert_astr1 = 635
 
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_RIGHT and horiz_astr1<950:
-                    horiz_astr1=horiz_astr1+vel
+    #astronauta 2
+    #andar do astronauta
+    if segurar[pygame.K_a] and horiz_astr2 > 0:
+        horiz_astr2 -= vel
+    if segurar[pygame.K_d] and horiz_astr2 < 950:
+        horiz_astr2 += vel
+    if segurar[pygame.K_s] and vert_astr2 < 650:
+        vert_astr2 += vel
 
-        
-                # TALVEZ PARA FAZER PULAR APENAS UMA VEZ, COLOCAR A CONDIÇÃO DE ESTAR TOCANDO UMA HITBOX? PODE GERAR ALGUNS BUGS
-                # PARABOLA NA HORA DE PULAR E CAIR
-            # para o astronauta 2
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_w and vert_astr2>0:
-                    vert_astr2=vert_astr2-salto_astr1-100
-
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_s and vert_astr2<650:
-                    vert_astr2=vert_astr2+vel
-
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_a and horiz_astr2>0:
-                    horiz_astr2=horiz_astr2-vel
-
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_d and horiz_astr2<950:
-                    horiz_astr2=horiz_astr2+vel  
-    #funçao para pausar o jogo, como ela ta rodando ate apertar x e direcionar para o menu ela tem que ficar aq no loop
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_x:
-                  menu_jogo() 
-    #mudei de lugar o fechamento da janela pq nao tava conseguindo encaixar no for
-            if event.type==pygame.QUIT:
-             janela_aberta=False    
-    #SO A PARTE QUE EXPLICA PRO JOGADOR O BOTÃO DE PAUSE COMO TA QUEBRANDO O FOR PODE MUDAR DE LUGAR,MAS PRECISA FICAR DENTRO DO LOOP    
+   #pra o astronauta 2 nao sair da tela
+    if horiz_astr2 < 0:
+        horiz_astr2 = 0
+    if horiz_astr2 > 950:
+        horiz_astr2 = 950
+    if vert_astr2 < -10:
+        vert_astr2 = -10
+    if vert_astr2 > 635:
+        vert_astr2 = 635
+    #A PARTE QUE EXPLICA PRO JOGADOR O BOTÃO DE PAUSE   
     botao_pausa = pygame.Rect(800,10, 200, 40)
     pygame.draw.rect(janela, (255, 0, 0), botao_pausa, border_radius=10)
     fonte_botao = pygame.font.SysFont("Arial", 24)
