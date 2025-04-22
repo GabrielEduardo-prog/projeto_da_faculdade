@@ -4,11 +4,14 @@ pygame.display.set_caption("Run to the moon!")
 vert_astr1=200
 horiz_astr1=300
 vel=5
-gravidade=2.0
-salto_astr1=15
-salto_astr2=15
+gravidade=1
 vert_astr2=200
 horiz_astr2=200
+salto_astr1=10
+salto_astr2=10
+pulo=15
+vel_Y=pulo
+pulando=0
 
 janela=pygame.display.set_mode((1000,700))
 background=pygame.image.load("terra4 700x700 (1).jpg")
@@ -96,11 +99,6 @@ while janela_aberta==True:
             if event.key == pygame.K_x:
                 menu_jogo()
 # Movimentação dos astronautas 
-            #pulo dos astronautas
-            if event.key == pygame.K_UP and vert_astr1 > 0:
-                  vert_astr1 -= salto_astr2 + 100
-            if event.key == pygame.K_w and vert_astr2 > 0: 
-                  vert_astr2 -= salto_astr1 + 100
     segurar=pygame.key.get_pressed()
 
     #astronauta 1
@@ -127,8 +125,20 @@ while janela_aberta==True:
         horiz_astr2 -= vel
     if segurar[pygame.K_d] and horiz_astr2 < 950:
         horiz_astr2 += vel
-    if segurar[pygame.K_s] and vert_astr2 < 650:
-        vert_astr2 += vel
+ 
+    # PULO
+    botao_pressionado_pulo = pygame.key.get_pressed()
+    if botao_pressionado_pulo[pygame.K_w]:
+        pulando=True
+
+    if pulando==True:
+        vert_astr2 -=vel_Y
+        vel_Y-=gravidade
+        if vel_Y < -pulo:
+            pulando = False
+            vel_Y = pulo
+
+
 
    #pra o astronauta 2 nao sair da tela
     if horiz_astr2 < 0:
@@ -152,13 +162,7 @@ while janela_aberta==True:
     if vert_astr1<600:
         vert_astr1=vert_astr1+gravidade
 
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
-# OQUE PRECISA FAZER: HITBOX
+
 
 
 pygame.quit()
