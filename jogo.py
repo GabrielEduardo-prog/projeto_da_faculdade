@@ -9,14 +9,28 @@ vert_astr2=200
 horiz_astr2=200
 salto_astr1=10
 salto_astr2=10
-pulo=15
-vel_Y=pulo
-pulando=0
+pulo1=15
+vel_Y1=pulo1
+pulando1=0
+pulando2=0
+pulo2=15
+vel_Y2=pulo2
+tempo_segurado=2
+
+
 
 janela=pygame.display.set_mode((1000,700))
 background=pygame.image.load("terra4 700x700 (1).jpg")
-astr1=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
-astr2=pygame.image.load("astronauta branco.png").convert_alpha()
+
+astronauta_correndo_4B=pygame.image.load("astronauta_branco_corrida_esquerda_4.png").convert_alpha()
+astronauta_correndo_3B=pygame.image.load("astronauta_branco-corrida_esquerda_3.png").convert_alpha()
+astronauta_correndo_2B=pygame.image.load("astronauta_branco_corrida_esquerda_2.png").convert_alpha()
+astronauta_correndo_1B=pygame.image.load('astronauta_branco_corrida_esquerda_1.png').convert_alpha()
+astronauta_normal_branco=pygame.image.load("astronauta branco.png").convert_alpha()
+astronauta_normal_rosa=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
+astr1=astronauta_normal_rosa
+astr2=astronauta_normal_branco
+
 relogio = pygame.time.Clock()
 janela_aberta=True
 
@@ -25,7 +39,7 @@ def tela_inicial():
     fonte = pygame.font.SysFont("Arial", 60)
     fundo = background
 
-    texto_botao = fonte.render("toque para começa", True, (0, 0, 0))
+    texto_botao = fonte.render("    JOGAR", True, (0, 0, 0))
     botao_rect = pygame.Rect(250,300,500,100)  # posiçao: largura, altura proporçao: largura, altura
 
     esperando = True
@@ -84,8 +98,8 @@ def menu_jogo():
 # LOOP: tela simultania do jogo tudo que ta rodando em tempo real
 while janela_aberta==True:
     relogio.tick(100) # o fps do jogo ja tinha colocado mas nao tinha explicado
-    janela.blit(astr1,(horiz_astr1,vert_astr1))
     janela.blit(astr2,(horiz_astr2,vert_astr2))
+    janela.blit(astr1,(horiz_astr1,vert_astr1))
     pygame.display.update()
     janela.blit(background,(0,0))
     
@@ -103,52 +117,59 @@ while janela_aberta==True:
 
     #astronauta 1
     #andar do personagem
-    if segurar[pygame.K_LEFT] and horiz_astr1 > 0:
-        horiz_astr1 -= vel
-    if segurar[pygame.K_RIGHT] and horiz_astr1 < 950:
-        horiz_astr1 += vel
-    if segurar[pygame.K_DOWN] and vert_astr1 < 650:
-        vert_astr1 += vel
-    #para o astronauta 1 nao sair da tela
-    if horiz_astr1 < 0:
-        horiz_astr1 = 0
-    if horiz_astr1 > 950:
-        horiz_astr1 = 950
-    if vert_astr1 < -10:
-         vert_astr1 = -10
-    if vert_astr1 > 635:
-        vert_astr1 = 635
-
-    #astronauta 2
-    #andar do astronauta
-    if segurar[pygame.K_a] and horiz_astr2 > 0:
+    if segurar[pygame.K_LEFT] and horiz_astr2 > 0:
         horiz_astr2 -= vel
-    if segurar[pygame.K_d] and horiz_astr2 < 950:
+    if segurar[pygame.K_RIGHT] and horiz_astr2 < 950:
         horiz_astr2 += vel
- 
-    # PULO
-    botao_pressionado_pulo = pygame.key.get_pressed()
-    if botao_pressionado_pulo[pygame.K_w]:
-        pulando=True
 
-    if pulando==True:
-        vert_astr2 -=vel_Y
-        vel_Y-=gravidade
-        if vel_Y < -pulo:
-            pulando = False
-            vel_Y = pulo
+    if segurar[pygame.K_UP]:
+        pulando2=True
+    if pulando2==True:
+        vert_astr2-=vel_Y2
+        vel_Y2-=gravidade
+        if vel_Y2 < -pulo2:
+            pulando2 =False 
+            vel_Y2=pulo2
 
 
-
-   #pra o astronauta 2 nao sair da tela
+    #para o astronauta 1 nao sair da tela
     if horiz_astr2 < 0:
         horiz_astr2 = 0
     if horiz_astr2 > 950:
         horiz_astr2 = 950
     if vert_astr2 < -10:
-        vert_astr2 = -10
+         vert_astr2 = -10
     if vert_astr2 > 635:
         vert_astr2 = 635
+
+    #astronauta 2
+    #andar do astronauta
+    if segurar[pygame.K_a] and horiz_astr1 > 0:
+        horiz_astr1 -= vel
+
+    if segurar[pygame.K_d] and horiz_astr1 < 950:
+        horiz_astr1 += vel
+ 
+    # PULO
+    if segurar[pygame.K_w]:
+        pulando1=True
+
+    if pulando1==True:
+        vert_astr1 -=vel_Y1
+        vel_Y1-=gravidade
+        if vel_Y1 < -pulo1:
+            pulando1 = False
+            vel_Y1 = pulo1
+
+   #pra o astronauta 2 nao sair da tela
+    if horiz_astr1 < 0:
+        horiz_astr1 = 0
+    if horiz_astr1 > 950:
+        horiz_astr1 = 950
+    if vert_astr1 < -10:
+        vert_astr1 = -10
+    if vert_astr1 > 635:
+        vert_astr1 = 635
     #A PARTE QUE EXPLICA PRO JOGADOR O BOTÃO DE PAUSE   
     botao_pausa = pygame.Rect(800,10, 200, 40)
     pygame.draw.rect(janela, (255, 0, 0), botao_pausa, border_radius=10)
@@ -157,12 +178,10 @@ while janela_aberta==True:
     janela.blit(texto_pause, (botao_pausa.x + 10, botao_pausa.y + 5))
 
 # para para a gente pode colocar um and nao tocando uma hitbox de uma pltaforma
+# para os buixo naocair no limbo
     if vert_astr2<600:
         vert_astr2=vert_astr2+gravidade
     if vert_astr1<600:
         vert_astr1=vert_astr1+gravidade
-
-
-
 
 pygame.quit()
