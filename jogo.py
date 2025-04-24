@@ -1,11 +1,11 @@
 import pygame
 pygame.init()
 pygame.display.set_caption("Run to the moon!")
-vert_astr1=200
+vert_astr1=630
 horiz_astr1=300
 vel=5
 gravidade=1
-vert_astr2=200
+vert_astr2=630
 horiz_astr2=200
 salto_astr1=10
 salto_astr2=10
@@ -20,7 +20,7 @@ tempo_segurado=2
 
 
 janela=pygame.display.set_mode((1000,700))
-background=pygame.image.load("terra4 700x700 (1).jpg")
+background=pygame.image.load("almaviva.png")
 
 astronauta_correndo_4B=pygame.image.load("astronauta_branco_corrida_esquerda_4.png").convert_alpha()
 astronauta_correndo_3B=pygame.image.load("astronauta_branco-corrida_esquerda_3.png").convert_alpha()
@@ -39,8 +39,8 @@ def tela_inicial():
     fonte = pygame.font.SysFont("Arial", 60)
     fundo = background
 
-    texto_botao = fonte.render("    JOGAR", True, (0, 0, 0))
-    botao_rect = pygame.Rect(250,300,500,100)  # posiçao: largura, altura proporçao: largura, altura
+    texto_botao = fonte.render("click para iniciar", True, (0, 0, 0))
+    botao_rect = pygame.Rect(270,300,450,100)  # posiçao: largura, altura proporçao: largura, altura
 
     esperando = True
     while esperando:
@@ -58,7 +58,7 @@ def tela_inicial():
         # Efeito de passar o mouse em cima e trocar de cor
         cor_botao = (255,255,255)
         if botao_rect.collidepoint(pygame.mouse.get_pos()):
-            cor_botao = (0, 0, 111)
+            cor_botao = (200, 0, 111)
 
         pygame.draw.rect(janela, cor_botao, botao_rect, border_radius=15)
         janela.blit(texto_botao, (botao_rect.x + 50, botao_rect.y + 20))
@@ -89,7 +89,7 @@ def menu_jogo():
 
         cor_botao = (255, 255, 255)
         if botao_continuar.collidepoint(pygame.mouse.get_pos()):
-            cor_botao = (0, 0, 110)
+            cor_botao = (200, 0, 110)
 
         pygame.draw.rect(janela, cor_botao, botao_continuar, border_radius=15)
         janela.blit(texto_continuar, (botao_continuar.x + 40, botao_continuar.y + 10))
@@ -102,7 +102,7 @@ while janela_aberta==True:
     janela.blit(astr1,(horiz_astr1,vert_astr1))
     pygame.display.update()
     janela.blit(background,(0,0))
-    
+
     for event in pygame.event.get():
         #fechamento
         if event.type == pygame.QUIT:
@@ -115,12 +115,14 @@ while janela_aberta==True:
 # Movimentação dos astronautas 
     segurar=pygame.key.get_pressed()
 
-    #astronauta 1
+    #astronauta 2
     #andar do personagem
     if segurar[pygame.K_LEFT] and horiz_astr2 > 0:
         horiz_astr2 -= vel
-    if segurar[pygame.K_RIGHT] and horiz_astr2 < 950:
+        astr2 = pygame.transform.flip(astronauta_normal_branco, True, False)
+    elif segurar[pygame.K_RIGHT] and horiz_astr2 < 950:
         horiz_astr2 += vel
+        astr2 = astronauta_normal_branco
 
     if segurar[pygame.K_UP]:
         pulando2=True
@@ -132,24 +134,24 @@ while janela_aberta==True:
             vel_Y2=pulo2
 
 
-    #para o astronauta 1 nao sair da tela
+    #para o astronauta 2 nao sair da tela
     if horiz_astr2 < 0:
         horiz_astr2 = 0
     if horiz_astr2 > 950:
         horiz_astr2 = 950
     if vert_astr2 < -10:
          vert_astr2 = -10
-    if vert_astr2 > 635:
-        vert_astr2 = 635
+    if vert_astr2 > 590:
+        vert_astr2 = 590
 
-    #astronauta 2
+    #astronauta 1
     #andar do astronauta
     if segurar[pygame.K_a] and horiz_astr1 > 0:
         horiz_astr1 -= vel
-
-    if segurar[pygame.K_d] and horiz_astr1 < 950:
+        astr1 = pygame.transform.flip(astronauta_normal_rosa, True, False)
+    elif segurar[pygame.K_d] and horiz_astr1 < 950:
         horiz_astr1 += vel
- 
+        astr1 = astronauta_normal_rosa    
     # PULO
     if segurar[pygame.K_w]:
         pulando1=True
@@ -159,17 +161,16 @@ while janela_aberta==True:
         vel_Y1-=gravidade
         if vel_Y1 < -pulo1:
             pulando1 = False
-            vel_Y1 = pulo1
-
-   #pra o astronauta 2 nao sair da tela
+            vel_Y1 = pulo1    
+   #pra o astronauta 1 nao sair da tela
     if horiz_astr1 < 0:
         horiz_astr1 = 0
     if horiz_astr1 > 950:
         horiz_astr1 = 950
     if vert_astr1 < -10:
         vert_astr1 = -10
-    if vert_astr1 > 635:
-        vert_astr1 = 635
+    if vert_astr1 > 590:
+        vert_astr1 = 590
     #A PARTE QUE EXPLICA PRO JOGADOR O BOTÃO DE PAUSE   
     botao_pausa = pygame.Rect(800,10, 200, 40)
     pygame.draw.rect(janela, (255, 0, 0), botao_pausa, border_radius=10)
