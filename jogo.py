@@ -131,7 +131,7 @@ while janela_aberta==True:
             pulando2 =False 
             vel_Y2=pulo2
 
-
+    # a
     #para o astronauta 1 nao sair da tela
     if horiz_astr2 < 0:
         horiz_astr2 = 0
