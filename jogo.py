@@ -18,9 +18,9 @@ vel_Y2=pulo2
 tempo_segurado=2
 
 
-
-janela=pygame.display.set_mode((1000,700))
-background=pygame.image.load("terra4 700x700 (1).jpg")
+janela=pygame.display.set_mode((1000,600))
+background=pygame.image.load("1224149.png")
+background_remodelado=pygame.transform.scale(background,(1000,600))
 
 astronauta_correndo_4B=pygame.image.load("astronauta_branco_corrida_esquerda_4.png").convert_alpha()
 astronauta_correndo_3B=pygame.image.load("astronauta_branco-corrida_esquerda_3.png").convert_alpha()
@@ -37,7 +37,7 @@ janela_aberta=True
 #Tela inicial antes de entrar no jogo 
 def tela_inicial():
     fonte = pygame.font.SysFont("Arial", 60)
-    fundo = background
+    fundo = background_remodelado
 
     texto_botao = fonte.render("    JOGAR", True, (0, 0, 0))
     botao_rect = pygame.Rect(250,300,500,100)  # posiçao: largura, altura proporçao: largura, altura
@@ -84,7 +84,7 @@ def menu_jogo():
             if evento.type == pygame.KEYDOWN:
                 if event.key == pygame.K_x:
                   esperando = False
-        janela.blit(background, (0, 0))
+        janela.blit(background_remodelado, (0,0))
         janela.blit(texto_pausa, (400, 200))
 
         cor_botao = (255, 255, 255)
@@ -101,7 +101,7 @@ while janela_aberta==True:
     janela.blit(astr2,(horiz_astr2,vert_astr2))
     janela.blit(astr1,(horiz_astr1,vert_astr1))
     pygame.display.update()
-    janela.blit(background,(0,0))
+    janela.blit(background_remodelado,(0,0))
     
     for event in pygame.event.get():
         #fechamento
@@ -139,8 +139,8 @@ while janela_aberta==True:
         horiz_astr2 = 950
     if vert_astr2 < -10:
          vert_astr2 = -10
-    if vert_astr2 > 635:
-        vert_astr2 = 635
+    if vert_astr2 > 500:
+        vert_astr2 = 500
 
     #astronauta 2
     #andar do astronauta
@@ -168,8 +168,8 @@ while janela_aberta==True:
         horiz_astr1 = 950
     if vert_astr1 < -10:
         vert_astr1 = -10
-    if vert_astr1 > 635:
-        vert_astr1 = 635
+    if vert_astr1 > 500:
+        vert_astr1 = 500
     #A PARTE QUE EXPLICA PRO JOGADOR O BOTÃO DE PAUSE   
     botao_pausa = pygame.Rect(800,10, 200, 40)
     pygame.draw.rect(janela, (255, 0, 0), botao_pausa, border_radius=10)
@@ -179,9 +179,9 @@ while janela_aberta==True:
 
 # para para a gente pode colocar um and nao tocando uma hitbox de uma pltaforma
 # para os buixo naocair no limbo
-    if vert_astr2<600:
+    if vert_astr2<500:
         vert_astr2=vert_astr2+gravidade
-    if vert_astr1<600:
+    if vert_astr1<500:
         vert_astr1=vert_astr1+gravidade
 
 pygame.quit()
