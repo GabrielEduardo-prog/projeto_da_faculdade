@@ -34,6 +34,29 @@ janela=pygame.display.set_mode((1000,600))
 background=pygame.image.load("beleza.gif")
 background_remodelado=pygame.transform.scale(background,(1000,700))
 fonte_m = pygame.font.SysFont("Arial", 20)
+sprite=pygame.image.load("sprites_parados.png")
+
+def def_sprites():
+    sair=False
+    x_sprite=0 # velociade
+    while not sair:
+    # Horiz,vertic,quanto pula, altura sprite, horiz sprite,por quanto tempo vai rolar a imagem
+        janela.blit(sprite,(100,200),(x_sprite*120,40,50,50)) 
+        pygame.time.Clock().tick(10)
+        pygame.display.flip()
+        x_sprite+=1
+        if x_sprite > 10:
+            x_sprite=0
+
+
+
+
+
+
+
+
+
+
 
 astronauta_normal_branco=pygame.image.load("astronauta branco.png").convert_alpha()
 astronauta_normal_rosa=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
