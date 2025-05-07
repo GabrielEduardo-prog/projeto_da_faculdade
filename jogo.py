@@ -12,7 +12,6 @@ pulando1, pulando2 = False, False
 # ABRIR O GIF E PEGAR QUADROS 
 gif = Image.open("beleza.gif")
 quadros = []
-
 try:
     while True:
         quadro = gif.copy()
@@ -36,10 +35,6 @@ background=pygame.image.load("beleza.gif")
 background_remodelado=pygame.transform.scale(background,(1000,700))
 fonte_m = pygame.font.SysFont("Arial", 20)
 
-astronauta_correndo_4B=pygame.image.load("astronauta_branco_corrida_esquerda_4.png").convert_alpha()
-astronauta_correndo_3B=pygame.image.load("astronauta_branco-corrida_esquerda_3.png").convert_alpha()
-astronauta_correndo_2B=pygame.image.load("astronauta_branco_corrida_esquerda_2.png").convert_alpha()
-astronauta_correndo_1B=pygame.image.load('astronauta_branco_corrida_esquerda_1.png').convert_alpha()
 astronauta_normal_branco=pygame.image.load("astronauta branco.png").convert_alpha()
 astronauta_normal_rosa=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
 astr1=astronauta_normal_rosa
