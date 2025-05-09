@@ -1,4 +1,3 @@
-from PIL import Image
 import pygame
 pygame.init()
 pygame.display.set_caption("Run to the moon!")
@@ -9,29 +8,10 @@ gravidade = 1
 pulo1, pulo2 = 15, 15
 vel_Y1, vel_Y2 = pulo1, pulo2
 pulando1, pulando2 = False, False
-# ABRIR O GIF E PEGAR QUADROS 
-gif = Image.open("beleza.gif")
-quadros = []
-try:
-    while True:
-        quadro = gif.copy()
-        quadro = quadro.convert("RGBA")  # converte para fundo transparente
-        quadro_pygame = pygame.image.fromstring(
-            quadro.tobytes(), quadro.size, quadro.mode
-        )
-        quadro_pygame = pygame.transform.scale(quadro_pygame, (1000, 620))  # Redimensiona
-        quadros.append(quadro_pygame)
-        gif.seek(gif.tell() + 1)
-except EOFError:
-    pass  # Chegou no final dos quadros
 
-# CONTROLE DE ANIMAÇÃO 
-indice_quadro = 0
-tempo_animacao = 100  # milissegundos entre quadros
-ultimo_update = pygame.time.get_ticks()
 
 janela=pygame.display.set_mode((1000,600))
-background=pygame.image.load("beleza.gif")
+background=pygame.image.load("sdf.jpg")
 background_remodelado=pygame.transform.scale(background,(1000,700))
 fonte_m = pygame.font.SysFont("Arial", 20)
 sprite=pygame.image.load("sprites_parados.png")
@@ -122,6 +102,10 @@ tela_inicial()
 #LOOP DO JOGO 
 while janela_aberta:
     relogio.tick(60)
+    # DESENHAR FUNDO E PERSONAGENS
+    janela.blit(background_remodelado, (0, 0))
+    janela.blit(astr1, (horiz_astr1, vert_astr1))
+    janela.blit(astr2, (horiz_astr2, vert_astr2))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             janela_aberta = False
@@ -194,18 +178,8 @@ while janela_aberta:
     horiz_astr2 = max(0, min(horiz_astr2, 942))
     vert_astr2 = max(0, min(vert_astr2, 500))
 
-    # Atualizar quadro do fundo 
-    agora = pygame.time.get_ticks()
-    if agora - ultimo_update > tempo_animacao:
-        indice_quadro = (indice_quadro + 1) % len(quadros)
-        ultimo_update = agora
-
-    #Desenha o fundo animado
-    janela.blit(quadros[indice_quadro], (0, 0))
-    janela.blit(astr2, (horiz_astr2, vert_astr2))
-    janela.blit(astr1, (horiz_astr1, vert_astr1))
-        # Desenhar nomes dos astronautas
-    nome1 = fonte_m.render("P1", True, (255, 0, 0))  # Rosa: rosa pink
+    #nome em cima dos personagens
+    nome1 = fonte_m.render("P1", True, (255, 0, 0))  # Rosa: rosa
     nome2 = fonte_m.render("P2", True, (250, 200,0))  # Branco: branco
 
     # Centralizar o texto em cima do personagem
