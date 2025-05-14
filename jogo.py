@@ -1,37 +1,47 @@
 import pygame
 pygame.init()
 pygame.display.set_caption("Run to the moon!")
-hp1, vp1 = 200, 500
-hp2, vp2= 300, 500
-vel = 5
+hp1, vp1 = 300, 450
+hp2, vp2= 200, 500
+vel = 15
 gravidade = 1
-pulo1, pulo2 = 15, 15
-vel_Y1, vel_Y2 = pulo1, pulo2
-pulando1, pulando2 = False, False
+pulo1, pulo2 = 12, 15
+vel_Y1, vel_Y2 = 0, pulo2
+pulando, pulando2 = False, False
 x_sprite=0
+pulando1 = False
+chao=450
+forca_pulo=15
+#plataforma_x, plataforma_y = -10, 400 #posição
+
+
 
 
 janela=pygame.display.set_mode((1000,600))
-background=pygame.image.load("sdf.jpg")
-background_remodelado=pygame.transform.scale(background,(1000,700))
+background=pygame.image.load("sdf3.jpg")
+background_remodelado=pygame.transform.scale(background,(1000,600))
 fonte_m = pygame.font.SysFont("Arial", 20)
 sprite=pygame.image.load("sprites_parados.png")
+# plataforma_img = pygame.image.load("plataforma.png").convert_alpha()
+# plataforma_img = pygame.transform.scale(plataforma_img, (400, 50))#largura(400) altura(50)
 
 
 Cavaleiro_UM=pygame.image.load("sprites_parados.png").convert_alpha()
 Cavaleiro_DOIS=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
+largura = Cavaleiro_UM.get_width()  *2
+altura = Cavaleiro_UM.get_height() * 2
+Cavaleiro_UM = pygame.transform.scale(Cavaleiro_UM, (largura, altura))
 astr1=Cavaleiro_UM
 astr2=Cavaleiro_DOIS
+mask_astro1 = pygame.mask.from_surface(astr1)
 
 relogio = pygame.time.Clock()
 janela_aberta=True
 #INTERFACE 
 def tela_inicial():
     fonte = pygame.font.SysFont("arial", 60)
-    texto = fonte.render("click para jogar", True, (0, 0, 0))
-    botao = pygame.Rect(250, 300, 450, 100)
-
     esperando = True
+
     while esperando:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -41,14 +51,18 @@ def tela_inicial():
                 if botao.collidepoint(evento.pos):
                     esperando = False
 
-        cor_botao = (255, 255, 255)
-        if botao.collidepoint(pygame.mouse.get_pos()):
-            cor_botao = (0, 0, 111)
-        janela.blit(background, (0, 0))
-        pygame.draw.rect(janela, cor_botao, botao, border_radius=15)
-        janela.blit(texto, (botao.x + 50, botao.y + 20))
-        pygame.display.update()
+       
+        botao = pygame.Rect(250, 300, 450, 100)
 
+        
+        if botao.collidepoint(pygame.mouse.get_pos()):
+            texto = fonte.render("click para jogar", True, (0, 0, 200)) #azul escuro
+        else:
+            texto = fonte.render("click para jogar", True, (0, 0, 0)) #preto
+
+        janela.blit(background, (0, 0))
+        janela.blit(texto, (botao.x + 50, botao.y + 20)) #desenha o texto sem retângulo
+        pygame.display.update()
 def menu_jogo():
     fonte = pygame.font.SysFont("Arial", 60)
     texto = fonte.render("PAUSADO", True, (255, 255, 0))
@@ -81,18 +95,27 @@ tela_inicial()
 
 #LOOP DO JOGO 
 while janela_aberta:
-    relogio.tick(60)
+    relogio.tick(30)
     # DESENHAR FUNDO E PERSONAGENS
     janela.blit(background_remodelado, (0, 0))
-
+    # janela.blit(plataforma_img, (plataforma_x, plataforma_y)) 
+    # janela.blit(plataforma_img, (plataforma_x, plataforma_y))    
 
 
 
 
     # janela.blit(astr2, (hp2, vp2))
-    janela.blit(astr2, (hp2, vp2),(x_sprite*120,40,50,50))
-    janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
-    pygame.time.Clock().tick(12)
+    janela.blit(astr2, (hp2, vp2),(x_sprite*240,80,100,100))
+    janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
+    # pygame.time.Clock().tick(12)
+
+    #máscaras de colisão pixel por pixel
+    # mask_astro1 = pygame.mask.from_surface(astr1)
+    # mask_plataforma = pygame.mask.from_surface(plataforma_img)
+    # offset_plataforma = (int(plataforma_x - hp1), int(plataforma_y - vp1 + altura - 10))
+    # colidindo = mask_astro1.overlap(mask_plataforma, offset_plataforma)
+
+    # pygame.time.Clock().tick(12)
 
 
     x_sprite+=1
@@ -113,78 +136,130 @@ while janela_aberta:
             menu_jogo()
 
     segurar = pygame.key.get_pressed()
-
-    #COLISÃO PIXEL POR PIXEL
-    capa1 = pygame.mask.from_surface(astr1)
-    capa2 = pygame.mask.from_surface(astr2)
-
-    #MOVIMENTO ASTRONAUTA 1 (A-D-W) O ROSA
     if segurar[pygame.K_a] and hp1 > 0:
-        offset = (hp2 - (hp1 - vel), vp2- vp1)
-        if not capa1.overlap(capa2, offset):
-            hp1 -= vel
+        hp1 -= vel
+
     if segurar[pygame.K_d] and hp1 < 950:
-        offset = (hp2 - (hp1 + vel), vp2- vp1)
-        if not capa1.overlap(capa2, offset):
-            hp1 += vel
-    if segurar[pygame.K_w] and not pulando1:
+        hp1 += vel
+        # Iniciar pulo
+    if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
+        vel_Y1 = -forca_pulo
         pulando1 = True
-        vel_Y1 = pulo1
 
+    # # Atualizar física do pulo
     if pulando1:
-        nova_vert = vp1 - vel_Y1
-        offset = (hp2 - hp1, vp2- nova_vert)
-        if not capa1.overlap(capa2, offset):
-            vp1 = nova_vert
-        vel_Y1 -= gravidade
-        if vel_Y1 < -pulo1:
+        vp1 += vel_Y1
+        vel_Y1 += gravidade
+        if vp1 >=chao:
+            vp1 = chao
+            vel_Y1 = 0
             pulando1 = False
+    # Física do pulo com colisão com plataforma
+    # if pulando1:
+    #     vp1 += vel_Y1
+    #     vel_Y1 += gravidade
+    #     offset_plataforma = (int(plataforma_x - hp1), int(plataforma_y - vp1 + altura - 10))
+    #     colidindo = mask_astro1.overlap(mask_plataforma, offset_plataforma)
+    
+    #     if vel_Y1 > 0 and colidindo:  # Está descendo e colidiu
+    #         vp1 = plataforma_y - altura + 10
+    #         vel_Y1 = 0
+    #         pulando1 = False
+    #     elif vp1 >= chao and not colidindo:
+    #         vp1 = chao
+    #         vel_Y1 = 0
+    #         pulando1 = False
+    # else:
+    # # Aplica gravidade quando não está pulando
+    #     if vp1 < chao:
+    #         vp1 += gravidade
+    #         offset_plataforma = (int(plataforma_x - hp1), int(plataforma_y - vp1 + altura - 10))
+    #         colidindo = mask_astro1.overlap(mask_plataforma, offset_plataforma)
+    #         if colidindo:
+    #             vp1 = plataforma_y - altura + 10
 
-    elif vp1 < 500:
-        offset = (hp2 - hp1, vp2- (vp1 + gravidade))
-        if not capa1.overlap(capa2, offset):
-            vp1 += gravidade
 
-    #MOVIMENTO ASTRONAUTA 2 (LEFT-RIGHT-UP) O BRANCO
-    if segurar[pygame.K_LEFT] and hp2 > 0:
-        offset = (hp1 - (hp2 - vel), vp1 - vp2)
-        if not capa2.overlap(capa1, offset):
-            hp2 -= vel
-    if segurar[pygame.K_RIGHT] and hp2 < 950:
-        offset = (hp1 - (hp2 + vel), vp1 - vp2)
-        if not capa2.overlap(capa1, offset):
-            hp2 += vel
-    if segurar[pygame.K_UP] and not pulando2:
-        pulando2 = True
-        vel_Y2 = pulo2
 
-    if pulando2:
-        nova_vert = vp2- vel_Y2
-        offset = (hp1 - hp2, vp1 - nova_vert)
-        if not capa2.overlap(capa1, offset):
-            vp2= nova_vert
-        vel_Y2 -= gravidade
-        if vel_Y2 < -pulo2:
-            pulando2 = False
 
-    elif vp2< 500:
-        offset = (hp1 - hp2, vp1 - (vp2+ gravidade))
-        if not capa2.overlap(capa1, offset):
-            vp2+= gravidade
+    
+
+
+    # #COLISÃO PIXEL POR PIXEL
+    # capa1 = pygame.mask.from_surface(astr1)
+    # capa2 = pygame.mask.from_surface(astr2)
+
+    # if segurar[pygame.K_d] and hp1 < 950:
+    #     offset = (hp2 - (hp1 + vel), vp2 - vp1)
+    # if not capa1.overlap(capa2, offset):
+    #     hp1 += vel
+
+
+    # #MOVIMENTO ASTRONAUTA 1 (A-D-W) O ROSA
+    # if segurar[pygame.K_a] and hp1 > 0:
+    #     offset = (hp2 - (hp1 - vel), vp2- vp1)
+    #     if not capa1.overlap(capa2, offset):
+    #         hp1 -= vel
+    # if segurar[pygame.K_d] and hp1 < 950:
+    #     offset = (hp2 - (hp1 + vel), vp2- vp1)
+    #     if not capa1.overlap(capa2, offset):
+    #         hp1 += vel
+    # if segurar[pygame.K_w] and not pulando1:
+    #     pulando1 = True
+    #     vel_Y1 = pulo1
+
+    # if pulando1:
+    #     nova_vert = vp1 - vel_Y1
+    #     offset = (hp2 - hp1, vp2- nova_vert)
+    #     if not capa1.overlap(capa2, offset):
+    #         vp1 = nova_vert
+    #     vel_Y1 -= gravidade
+    #     if vel_Y1 < -pulo1:
+    #         pulando1 = False
+
+    # elif vp1 < 500:
+    #     offset = (hp2 - hp1, vp2- (vp1 + gravidade))
+    #     if not capa1.overlap(capa2, offset):
+    #         vp1 += gravidade
+
+    # #MOVIMENTO ASTRONAUTA 2 (LEFT-RIGHT-UP) O BRANCO
+    # if segurar[pygame.K_LEFT] and hp2 > 0:
+    #     offset = (hp1 - (hp2 - vel), vp1 - vp2)
+    #     if not capa2.overlap(capa1, offset):
+    #         hp2 -= vel
+    # if segurar[pygame.K_RIGHT] and hp2 < 950:
+    #     offset = (hp1 - (hp2 + vel), vp1 - vp2)
+    #     if not capa2.overlap(capa1, offset):
+    #         hp2 += vel
+    # if segurar[pygame.K_UP] and not pulando2:
+    #     pulando2 = True
+    #     vel_Y2 = pulo2
+
+    # if pulando2:
+    #     nova_vert = vp2- vel_Y2
+    #     offset = (hp1 - hp2, vp1 - nova_vert)
+    #     if not capa2.overlap(capa1, offset):
+    #         vp2= nova_vert
+    #     vel_Y2 -= gravidade
+    #     if vel_Y2 < -pulo2:
+    #         pulando2 = False
+
+    # elif vp2< 500:
+    #     offset = (hp1 - hp2, vp1 - (vp2+ gravidade))
+    #     if not capa2.overlap(capa1, offset):
+    #         vp2+= gravidade
 
     # LIMITES DE TELA
-    hp1 = max(0, min(hp1, 942))
     vp1 = max(0, min(vp1, 500))
     hp2 = max(0, min(hp2, 942))
     vp2= max(0, min(vp2, 500))
 
     #nome em cima dos personagens
     nome1 = fonte_m.render("P1", True, (255, 0, 0))  # Rosa: rosa
-    nome2 = fonte_m.render("P2", True, (250, 200,0))  # Branco: branco
+    # nome2 = fonte_m.render("P2", True, (250, 200,0))  # Branco: branco
 
-    # Centralizar o texto em cima do personagem
-    janela.blit(nome1, (hp1 + astr1.get_width()//2 - nome1.get_width()//2, vp1 - 25))
-    janela.blit(nome2, (hp2 + astr2.get_width()//2 - nome2.get_width()//2, vp2- 25))
+    # # Centralizar o texto em cima do personagem
+    janela.blit(nome1, (hp1 + Cavaleiro_DOIS.get_width()//2 - nome1.get_width()//2, vp1 - 25))
+    # janela.blit(nome2, (hp2 + astr2.get_width()//2 - nome2.get_width()//2, vp2- 25))
     # Botão de pausa
     botao = pygame.Rect(800, 10, 200, 40)
     pygame.draw.rect(janela, (255, 0, 0), botao, border_radius=10)
