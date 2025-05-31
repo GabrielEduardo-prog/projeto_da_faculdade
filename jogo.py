@@ -26,12 +26,15 @@ sprite=pygame.image.load("sprites_parados.png")
 # plataforma_img = pygame.image.load("plataforma.png").convert_alpha()
 # plataforma_img = pygame.transform.scale(plataforma_img, (400, 50))#largura(400) altura(50)
 
-Cavaleiro_UM_pulando=pygame.image.load("_Jump.png")
-Cavaleiro_UM_caindo=pygame.image.load("_Fall.png")
+Cavaleiro_UM_pulando=pygame.image.load("_Jump.png").convert_alpha()
+Cavaleiro_UM_caindo=pygame.image.load("_Fall.png").convert_alpha()
 Cavaleiro_UM_parado=pygame.image.load("sprites_parados.png").convert_alpha()
 Cavaleiro_DOIS=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
 largura = Cavaleiro_UM_parado.get_width()  *2
 altura = Cavaleiro_UM_parado.get_height() * 2
+largura_pulando = Cavaleiro_UM_pulando.get_width()  *2
+altura_pulando = Cavaleiro_UM_pulando.get_height() * 2
+Cavaleiro_UM_pulando = pygame.transform.scale(Cavaleiro_UM_pulando, (largura_pulando, altura_pulando))
 Cavaleiro_UM_parado = pygame.transform.scale(Cavaleiro_UM_parado, (largura, altura))
 astr1=Cavaleiro_UM_parado
 astr2=Cavaleiro_DOIS
@@ -157,7 +160,7 @@ while janela_aberta:
         vel_Y1 += gravidade
 
         astr1=Cavaleiro_UM_pulando
-        janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
+        janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
         x_sprite+=1
         if x_sprite > 2:
             x_sprite=0
