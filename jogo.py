@@ -9,6 +9,7 @@ pulo1, pulo2 = 12, 15
 vel_Y1, vel_Y2 = 0, pulo2
 pulando, pulando2 = False, False
 caindo1,caindo2=False,False
+atacando1,atacando2=False,False
 x_sprite=0
 pulando1 = False
 chao=450
@@ -26,6 +27,9 @@ sprite=pygame.image.load("sprites_parados.png")
 # plataforma_img = pygame.image.load("plataforma.png").convert_alpha()
 # plataforma_img = pygame.transform.scale(plataforma_img, (400, 50))#largura(400) altura(50)
 
+Cavaleiro_UM_atacando_direita=pygame.image.load("_Attack_recortado.png")
+Cavaleiro_UM_correndo_direita=pygame.image.load("_Run_recortado.png")
+Cavaleiro_UM_correndo_esquerda=pygame.image.load("_Run_recortado_esquerda.png")
 Cavaleiro_UM_pulando=pygame.image.load("_Jump.png")
 Cavaleiro_UM_caindo=pygame.image.load("_Fall.png")
 Cavaleiro_UM_parado=pygame.image.load("sprites_parados.png").convert_alpha()
@@ -136,20 +140,38 @@ while janela_aberta:
             janela_aberta = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_x:
             menu_jogo()
-    soltar = pygame.MOUSEBUTTONUP
     segurar = pygame.key.get_pressed()
     if segurar[pygame.K_a] and hp1 > 0:
         hp1 -= vel
-        astr1=Cavaleiro_DOIS
+        astr1=Cavaleiro_UM_correndo_esquerda
+        janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
+        x_sprite+=1
+        if x_sprite > 9:
+            x_sprite=0
 
     if segurar[pygame.K_d] and hp1 < 950:
         hp1 += vel
+        astr1=Cavaleiro_UM_correndo_direita
+        janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
+        x_sprite+=1
+        if x_sprite > 9:
+            x_sprite=0
         # Iniciar pulo
     if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
         vel_Y1 = -forca_pulo
         pulando1 = True
-
-
+    
+        if event.type==pygame.KEYDOWN:
+            if event.key==pygame.K_s:
+                atacando1=True
+                if atacando1==True:
+                    astr1=Cavaleiro_UM_atacando_direita
+                    janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
+                    x_sprite+=1
+                    if x_sprite > 15:
+                        x_sprite=0
+                        atacando1=False
+        
 
     # # Atualizar física do pulo
     if pulando1:
@@ -165,9 +187,8 @@ while janela_aberta:
             vp1 = chao
             vel_Y1 = 0
             pulando1 = False
-    
-    
-    if not any(segurar) and pulando1==False:
+
+    if not any(segurar) and pulando1==False and atacando1==False:
         astr1=Cavaleiro_UM_parado
         janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
         x_sprite+=1
