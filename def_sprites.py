@@ -2,7 +2,7 @@ import pygame as pg
 from pygame.locals import *
 pg.init()
 janela=pg.display.set_mode((800,600))
-sprite=pg.image.load("sprites_parados.png")
+sprite=pg.image.load("_Jump.png")
 sair=False
 x_sprite=0 # velociade
 while not sair:
@@ -17,5 +17,5 @@ while not sair:
             sair = True
 
     x_sprite+=1
-    if x_sprite > 10:
+    if x_sprite >4:
         x_sprite=0

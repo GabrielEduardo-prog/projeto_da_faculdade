@@ -8,6 +8,7 @@ gravidade = 1
 pulo1, pulo2 = 12, 15
 vel_Y1, vel_Y2 = 0, pulo2
 pulando, pulando2 = False, False
+caindo1,caindo2=False,False
 x_sprite=0
 pulando1 = False
 chao=450
@@ -25,13 +26,14 @@ sprite=pygame.image.load("sprites_parados.png")
 # plataforma_img = pygame.image.load("plataforma.png").convert_alpha()
 # plataforma_img = pygame.transform.scale(plataforma_img, (400, 50))#largura(400) altura(50)
 
-
-Cavaleiro_UM=pygame.image.load("sprites_parados.png").convert_alpha()
+Cavaleiro_UM_pulando=pygame.image.load("_Jump.png")
+Cavaleiro_UM_caindo=pygame.image.load("_Fall.png")
+Cavaleiro_UM_parado=pygame.image.load("sprites_parados.png").convert_alpha()
 Cavaleiro_DOIS=pygame.image.load("astronauta_rosa-removebg-preview.png").convert_alpha()
-largura = Cavaleiro_UM.get_width()  *2
-altura = Cavaleiro_UM.get_height() * 2
-Cavaleiro_UM = pygame.transform.scale(Cavaleiro_UM, (largura, altura))
-astr1=Cavaleiro_UM
+largura = Cavaleiro_UM_parado.get_width()  *2
+altura = Cavaleiro_UM_parado.get_height() * 2
+Cavaleiro_UM_parado = pygame.transform.scale(Cavaleiro_UM_parado, (largura, altura))
+astr1=Cavaleiro_UM_parado
 astr2=Cavaleiro_DOIS
 mask_astro1 = pygame.mask.from_surface(astr1)
 
@@ -106,7 +108,7 @@ while janela_aberta:
 
     # janela.blit(astr2, (hp2, vp2))
     janela.blit(astr2, (hp2, vp2),(x_sprite*240,80,100,100))
-    janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
+    # janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
     # pygame.time.Clock().tick(12)
 
     #máscaras de colisão pixel por pixel
@@ -118,9 +120,9 @@ while janela_aberta:
     # pygame.time.Clock().tick(12)
 
 
-    x_sprite+=1
-    if x_sprite > 9:
-        x_sprite=0
+    # x_sprite+=1
+    # if x_sprite > 9:
+    #     x_sprite=0
 
 
 
@@ -134,10 +136,11 @@ while janela_aberta:
             janela_aberta = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_x:
             menu_jogo()
-
+    soltar = pygame.MOUSEBUTTONUP
     segurar = pygame.key.get_pressed()
     if segurar[pygame.K_a] and hp1 > 0:
         hp1 -= vel
+        astr1=Cavaleiro_DOIS
 
     if segurar[pygame.K_d] and hp1 < 950:
         hp1 += vel
@@ -146,14 +149,31 @@ while janela_aberta:
         vel_Y1 = -forca_pulo
         pulando1 = True
 
+
+
     # # Atualizar física do pulo
     if pulando1:
         vp1 += vel_Y1
         vel_Y1 += gravidade
+
+        astr1=Cavaleiro_UM_pulando
+        janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
+        x_sprite+=1
+        if x_sprite > 2:
+            x_sprite=0
         if vp1 >=chao:
             vp1 = chao
             vel_Y1 = 0
             pulando1 = False
+    
+    
+    if not any(segurar) and pulando1==False:
+        astr1=Cavaleiro_UM_parado
+        janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
+        x_sprite+=1
+        if x_sprite > 9:
+            x_sprite=0
+
     # Física do pulo com colisão com plataforma
     # if pulando1:
     #     vp1 += vel_Y1
