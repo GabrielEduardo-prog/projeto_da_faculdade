@@ -2,7 +2,7 @@ import pygame as pg
 from pygame.locals import *
 pg.init()
 janela=pg.display.set_mode((800,600))
-sprite=pg.image.load("_Jump_esquerda.png")
+sprite=pg.image.load("_Attack_recortado.png")
 sair=False
 x_sprite=0 # velociade
 while not sair:

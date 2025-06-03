@@ -51,12 +51,16 @@ largura_correndo_esquerda = Cavaleiro_UM_correndo_esquerda.get_width()  *2
 altura_correndo_esquerda = Cavaleiro_UM_correndo_esquerda.get_height() * 2
 largura_cavaleiro1_parado_esquerda=Cavaleiro_UM_parado_esquerda.get_width() * 2
 altura_cavaleiro1_parado_esquerda=Cavaleiro_UM_parado_esquerda.get_height() * 2
-
 largura_cavaleiro1_caindo=Cavaleiro_UM_caindo.get_width() * 2
 altura_cavaleiro1_caindo=Cavaleiro_UM_caindo.get_height() * 2
-
 largura_cavaleiro1_caindo_esquerda=Cavaleiro_UM_caindo_esquerda.get_width() * 2
 altura_cavaleiro1_caindo_esquerda=Cavaleiro_UM_caindo_esquerda.get_height() * 2
+
+altura_cavaleiro1_atacando_direita=Cavaleiro_UM_atacando_direita.get_width()*2
+largura_cavaleiro1_atacando_direita=Cavaleiro_UM_atacando_direita.get_height()*2
+
+altura_cavaleiro1_atacando_esquerda=Cavaleiro_UM_atacando_esquerda.get_width()*2
+largura_cavaleiro1_atacando_esquerda=Cavaleiro_UM_atacando_esquerda.get_height()*2
 
 Cavaleiro_UM_correndo_esquerda = pygame.transform.scale(Cavaleiro_UM_correndo_esquerda, (largura_correndo_esquerda, altura_correndo_esquerda))
 Cavaleiro_UM_correndo_direita = pygame.transform.scale(Cavaleiro_UM_correndo_direita, (largura_correndo_direita, altura_correndo_direita))
@@ -64,13 +68,12 @@ Cavaleiro_UM_pulando = pygame.transform.scale(Cavaleiro_UM_pulando, (largura_pul
 Cavaleiro_UM_parado = pygame.transform.scale(Cavaleiro_UM_parado, (largura, altura))
 Cavaleiro_UM_parado_esquerda= pygame.transform.scale(Cavaleiro_UM_parado_esquerda,(largura_cavaleiro1_parado_esquerda,altura_cavaleiro1_parado_esquerda))
 Cavaleiro_UM_pulando_esquerda= pygame.transform.scale(Cavaleiro_UM_pulando_esquerda,(largura_pulando_esquerda, altura_pulando_esquerda))
-
 Cavaleiro_UM_caindo=pygame.transform.scale(Cavaleiro_UM_caindo,(largura_cavaleiro1_caindo,altura_cavaleiro1_caindo))
 Cavaleiro_UM_caindo_esquerda=pygame.transform.scale(Cavaleiro_UM_caindo_esquerda,(largura_cavaleiro1_caindo_esquerda, altura_cavaleiro1_caindo_esquerda))
-
+Cavaleiro_UM_atacando_direita=pygame.transform.scale(Cavaleiro_UM_atacando_direita,(largura_cavaleiro1_atacando_direita,altura_cavaleiro1_atacando_direita))
+Cavaleiro_UM_atacando_esquerda=pygame.transform.scale(Cavaleiro_UM_atacando_esquerda,(largura_cavaleiro1_atacando_esquerda,altura_cavaleiro1_atacando_esquerda))
 astr1=Cavaleiro_UM_parado
 mask_astro1 = pygame.mask.from_surface(astr1)
-
 relogio = pygame.time.Clock()
 janela_aberta=True
 #INTERFACE 
@@ -158,6 +161,9 @@ while janela_aberta:
     if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
         vel_Y1 = -forca_pulo
         pulando1 = True
+
+    if segurar[pygame.K_s] and not(segurar[pygame.K_d]) and not(segurar[pygame.K_a]):
+        atacando1=True
     #PULO ( se VARIAVEL DE CAIR= caindo1)
     if pulando1: 
         vp1 += vel_Y1
@@ -170,45 +176,6 @@ while janela_aberta:
             vel_Y1 = 0
             pulando1 = False
                 
-    #      # Iniciar pulo
-    # if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
-    #     vel_Y1 = -forca_pulo
-    #     pulando1 = True
-    
-    #     if event.type==pygame.KEYDOWN:
-    #         if event.key==pygame.K_s:
-    #             atacando1=True
-    #             if atacando1==True:
-    #                 astr1=Cavaleiro_UM_atacando_direita
-    #                 janela.blit(astr1,(hp1,vp1),(x_sprite*120,40,50,50)) 
-    #                 x_sprite+=1
-    #                 if x_sprite > 15:
-    #                     x_sprite=0
-    #                     atacando1=False
-        
-
-    # # # Atualizar física do pulo
-    # if pulando1:
-    #     vp1 += vel_Y1
-    #     vel_Y1 += gravidade
-
-    #     astr1=Cavaleiro_UM_pulando
-    #     janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
-    #     x_sprite+=1
-    #     if x_sprite > 2:
-    #         x_sprite=0
-    #     if vp1 >=chao:
-    #         vp1 = chao
-    #         vel_Y1 = 0
-    #         pulando1 = False
-
-    # if not any(segurar) and pulando1==False and atacando1==False:
-    #     astr1=Cavaleiro_UM_parado
-    #     janela.blit(astr1,(hp1,vp1),(x_sprite*240,80,100,100)) 
-    #     x_sprite+=1
-    #     if x_sprite > 9:
-    #         x_sprite=0
-
     # ESCOLHA DO SPRITE 
     if cavaleiro1_direita==True:
         sprite_atual = Cavaleiro_UM_parado
@@ -219,11 +186,7 @@ while janela_aberta:
             sprite_atual = Cavaleiro_UM_pulando
         if Cavaleiro1_esquerda:
             sprite_atual=Cavaleiro_UM_pulando_esquerda
-    # if caindo1==True:
-    #     if cavaleiro1_direita:
-    #         sprite_atual= Cavaleiro_UM_caindo
-    #     if Cavaleiro1_esquerda:
-    #         sprite_atual= Cavaleiro_UM_caindo_esquerda
+
     elif segurar[pygame.K_a] and hp1 > 0 and not(segurar[pygame.K_d]):
         sprite_atual = Cavaleiro_UM_correndo_esquerda
         Cavaleiro1_esquerda=True
@@ -233,122 +196,23 @@ while janela_aberta:
         sprite_atual = Cavaleiro_UM_correndo_direita
         Cavaleiro1_esquerda=False
         cavaleiro1_direita=True
+
+    elif atacando1==True:
+        sprite_atual=Cavaleiro_UM_atacando_direita
+        atacando1=False
+       
     else:
         x_sprite += 1
         if x_sprite > 9:
             x_sprite = 0
-
      # Desenho do personagem
     janela.blit(sprite_atual, (hp1, vp1), (x_sprite*240, 80, 100, 100))
-
-
-    # ...restante do seu código (nomes, botões, display.update etc)...
-    # Física do pulo com colisão com plataforma
-    # if pulando1:
-    #     vp1 += vel_Y1
-    #     vel_Y1 += gravidade
-    #     offset_plataforma = (int(plataforma_x - hp1), int(plataforma_y - vp1 + altura - 10))
-    #     colidindo = mask_astro1.overlap(mask_plataforma, offset_plataforma)
-    
-    #     if vel_Y1 > 0 and colidindo:  # Está descendo e colidiu
-    #         vp1 = plataforma_y - altura + 10
-    #         vel_Y1 = 0
-    #         pulando1 = False
-    #     elif vp1 >= chao and not colidindo:
-    #         vp1 = chao
-    #         vel_Y1 = 0
-    #         pulando1 = False
-    # else:
-    # # Aplica gravidade quando não está pulando
-    #     if vp1 < chao:
-    #         vp1 += gravidade
-    #         offset_plataforma = (int(plataforma_x - hp1), int(plataforma_y - vp1 + altura - 10))
-    #         colidindo = mask_astro1.overlap(mask_plataforma, offset_plataforma)
-    #         if colidindo:
-    #             vp1 = plataforma_y - altura + 10
-
-
-
-
-    
-
-
-    # #COLISÃO PIXEL POR PIXEL
-    # capa1 = pygame.mask.from_surface(astr1)
-    # capa2 = pygame.mask.from_surface(astr2)
-
-    # if segurar[pygame.K_d] and hp1 < 950:
-    #     offset = (hp2 - (hp1 + vel), vp2 - vp1)
-    # if not capa1.overlap(capa2, offset):
-    #     hp1 += vel
-
-
-    # #MOVIMENTO ASTRONAUTA 1 (A-D-W) O ROSA
-    # if segurar[pygame.K_a] and hp1 > 0:
-    #     offset = (hp2 - (hp1 - vel), vp2- vp1)
-    #     if not capa1.overlap(capa2, offset):
-    #         hp1 -= vel
-    # if segurar[pygame.K_d] and hp1 < 950:
-    #     offset = (hp2 - (hp1 + vel), vp2- vp1)
-    #     if not capa1.overlap(capa2, offset):
-    #         hp1 += vel
-    # if segurar[pygame.K_w] and not pulando1:
-    #     pulando1 = True
-    #     vel_Y1 = pulo1
-
-    # if pulando1:
-    #     nova_vert = vp1 - vel_Y1
-    #     offset = (hp2 - hp1, vp2- nova_vert)
-    #     if not capa1.overlap(capa2, offset):
-    #         vp1 = nova_vert
-    #     vel_Y1 -= gravidade
-    #     if vel_Y1 < -pulo1:
-    #         pulando1 = False
-
-    # elif vp1 < 500:
-    #     offset = (hp2 - hp1, vp2- (vp1 + gravidade))
-    #     if not capa1.overlap(capa2, offset):
-    #         vp1 += gravidade
-
-    # #MOVIMENTO ASTRONAUTA 2 (LEFT-RIGHT-UP) O BRANCO
-    # if segurar[pygame.K_LEFT] and hp2 > 0:
-    #     offset = (hp1 - (hp2 - vel), vp1 - vp2)
-    #     if not capa2.overlap(capa1, offset):
-    #         hp2 -= vel
-    # if segurar[pygame.K_RIGHT] and hp2 < 950:
-    #     offset = (hp1 - (hp2 + vel), vp1 - vp2)
-    #     if not capa2.overlap(capa1, offset):
-    #         hp2 += vel
-    # if segurar[pygame.K_UP] and not pulando2:
-    #     pulando2 = True
-    #     vel_Y2 = pulo2
-
-    # if pulando2:
-    #     nova_vert = vp2- vel_Y2
-    #     offset = (hp1 - hp2, vp1 - nova_vert)
-    #     if not capa2.overlap(capa1, offset):
-    #         vp2= nova_vert
-    #     vel_Y2 -= gravidade
-    #     if vel_Y2 < -pulo2:
-    #         pulando2 = False
-
-    # elif vp2< 500:
-    #     offset = (hp1 - hp2, vp1 - (vp2+ gravidade))
-    #     if not capa2.overlap(capa1, offset):
-    #         vp2+= gravidade
 
     # LIMITES DE TELA
     vp1 = max(0, min(vp1, 500))
     hp2 = max(0, min(hp2, 942))
     vp2= max(0, min(vp2, 500))
 
-    #nome em cima dos personagens
-    # nome1 = fonte_m.render("P1", True, (255, 0, 0))  # Rosa: rosa
-    # nome2 = fonte_m.render("P2", True, (250, 200,0))  # Branco: branco
-
-    # # Centralizar o texto em cima do personagem
-    # janela.blit(nome1, (hp1 + Cavaleiro_DOIS.get_width()//2 - nome1.get_width()//2, vp1 - 25))
-    # janela.blit(nome2, (hp2 + astr2.get_width()//2 - nome2.get_width()//2, vp2- 25))
     # Botão de pausa
     botao = pygame.Rect(800, 10, 200, 40)
     pygame.draw.rect(janela, (255, 0, 0), botao, border_radius=10)
