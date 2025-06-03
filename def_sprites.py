@@ -7,7 +7,7 @@ sair=False
 x_sprite=0 # velociade
 while not sair:
 # Horiz,vertic,quanto pula, altura sprite, horiz sprite,por quanto tempo vai rolar a imagem
-    janela.blit(sprite,(100,200),(x_sprite*240, 80, 100, 100)) 
+    janela.blit(sprite, (200,300), (x_sprite * 87, 0, 50,100))
     pg.time.Clock().tick(10)
     pg.display.flip()
 

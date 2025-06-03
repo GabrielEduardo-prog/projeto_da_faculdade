@@ -16,6 +16,7 @@ chao=450
 forca_pulo=15
 Cavaleiro1_esquerda=False
 cavaleiro1_direita=True
+tempo_ataque=0
 #plataforma_x, plataforma_y = -10, 400 #posição
 
 
@@ -161,9 +162,16 @@ while janela_aberta:
     if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
         vel_Y1 = -forca_pulo
         pulando1 = True
+        # Contagem do ataque
+        
+    if tempo_ataque > 0:
+        tempo_ataque -= 1
+    else:
+        atacando1 = False
 
     if segurar[pygame.K_s] and not(segurar[pygame.K_d]) and not(segurar[pygame.K_a]):
         atacando1=True
+        tempo_ataque=10
     #PULO ( se VARIAVEL DE CAIR= caindo1)
     if pulando1: 
         vp1 += vel_Y1
@@ -198,9 +206,11 @@ while janela_aberta:
         cavaleiro1_direita=True
 
     elif atacando1==True:
-        sprite_atual=Cavaleiro_UM_atacando_direita
-        atacando1=False
-       
+        if cavaleiro1_direita:
+            sprite_atual = Cavaleiro_UM_atacando_direita
+        else:
+            sprite_atual = Cavaleiro_UM_atacando_esquerda
+
     else:
         x_sprite += 1
         if x_sprite > 9:
