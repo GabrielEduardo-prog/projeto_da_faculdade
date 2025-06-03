@@ -37,6 +37,7 @@ Cavaleiro_UM_correndo_esquerda=pygame.image.load("_Run_recortado_esquerda.png").
 Cavaleiro_UM_pulando_esquerda=pygame.image.load("_Jump_esquerda.png")
 Cavaleiro_UM_pulando=pygame.image.load("_Jump.png")
 Cavaleiro_UM_caindo=pygame.image.load("_Fall.png")
+Cavaleiro_UM_caindo_esquerda=pygame.image.load("_Fall_PNG_esquerda.png")
 Cavaleiro_UM_parado=pygame.image.load("sprites_parados.png").convert_alpha()
 largura = Cavaleiro_UM_parado.get_width()  *2
 altura = Cavaleiro_UM_parado.get_height() * 2
@@ -50,12 +51,23 @@ largura_correndo_esquerda = Cavaleiro_UM_correndo_esquerda.get_width()  *2
 altura_correndo_esquerda = Cavaleiro_UM_correndo_esquerda.get_height() * 2
 largura_cavaleiro1_parado_esquerda=Cavaleiro_UM_parado_esquerda.get_width() * 2
 altura_cavaleiro1_parado_esquerda=Cavaleiro_UM_parado_esquerda.get_height() * 2
+
+largura_cavaleiro1_caindo=Cavaleiro_UM_caindo.get_width() * 2
+altura_cavaleiro1_caindo=Cavaleiro_UM_caindo.get_height() * 2
+
+largura_cavaleiro1_caindo_esquerda=Cavaleiro_UM_caindo_esquerda.get_width() * 2
+altura_cavaleiro1_caindo_esquerda=Cavaleiro_UM_caindo_esquerda.get_height() * 2
+
 Cavaleiro_UM_correndo_esquerda = pygame.transform.scale(Cavaleiro_UM_correndo_esquerda, (largura_correndo_esquerda, altura_correndo_esquerda))
 Cavaleiro_UM_correndo_direita = pygame.transform.scale(Cavaleiro_UM_correndo_direita, (largura_correndo_direita, altura_correndo_direita))
 Cavaleiro_UM_pulando = pygame.transform.scale(Cavaleiro_UM_pulando, (largura_pulando, altura_pulando))
 Cavaleiro_UM_parado = pygame.transform.scale(Cavaleiro_UM_parado, (largura, altura))
 Cavaleiro_UM_parado_esquerda= pygame.transform.scale(Cavaleiro_UM_parado_esquerda,(largura_cavaleiro1_parado_esquerda,altura_cavaleiro1_parado_esquerda))
 Cavaleiro_UM_pulando_esquerda= pygame.transform.scale(Cavaleiro_UM_pulando_esquerda,(largura_pulando_esquerda, altura_pulando_esquerda))
+
+Cavaleiro_UM_caindo=pygame.transform.scale(Cavaleiro_UM_caindo,(largura_cavaleiro1_caindo,altura_cavaleiro1_caindo))
+Cavaleiro_UM_caindo_esquerda=pygame.transform.scale(Cavaleiro_UM_caindo_esquerda,(largura_cavaleiro1_caindo_esquerda, altura_cavaleiro1_caindo_esquerda))
+
 astr1=Cavaleiro_UM_parado
 mask_astro1 = pygame.mask.from_surface(astr1)
 
@@ -131,13 +143,13 @@ while janela_aberta:
     segurar = pygame.key.get_pressed()
 
     # Variáveis de movimento e estado
-    if segurar[pygame.K_a] and hp1 > 0:
+    if segurar[pygame.K_a] and hp1 > 0 and not(segurar[pygame.K_d]) and not(pulando1):
         hp1 -= vel
         x_sprite += 1
         if x_sprite > 9:
             x_sprite = 0
 
-    if segurar[pygame.K_d] and hp1 < 950:
+    if segurar[pygame.K_d] and hp1 < 950 and not(segurar[pygame.K_a]) and not(pulando1):
         hp1 += vel
         x_sprite += 1
         if x_sprite > 9:
@@ -146,8 +158,8 @@ while janela_aberta:
     if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
         vel_Y1 = -forca_pulo
         pulando1 = True
-    #PULO
-    if pulando1:
+    #PULO ( se VARIAVEL DE CAIR= caindo1)
+    if pulando1: 
         vp1 += vel_Y1
         vel_Y1 += gravidade
         x_sprite += 1
@@ -157,6 +169,7 @@ while janela_aberta:
             vp1 = chao
             vel_Y1 = 0
             pulando1 = False
+                
     #      # Iniciar pulo
     # if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
     #     vel_Y1 = -forca_pulo
@@ -206,12 +219,17 @@ while janela_aberta:
             sprite_atual = Cavaleiro_UM_pulando
         if Cavaleiro1_esquerda:
             sprite_atual=Cavaleiro_UM_pulando_esquerda
-    elif segurar[pygame.K_a] and hp1 > 0:
+    # if caindo1==True:
+    #     if cavaleiro1_direita:
+    #         sprite_atual= Cavaleiro_UM_caindo
+    #     if Cavaleiro1_esquerda:
+    #         sprite_atual= Cavaleiro_UM_caindo_esquerda
+    elif segurar[pygame.K_a] and hp1 > 0 and not(segurar[pygame.K_d]):
         sprite_atual = Cavaleiro_UM_correndo_esquerda
         Cavaleiro1_esquerda=True
         cavaleiro1_direita=False
 
-    elif segurar[pygame.K_d] and hp1 < 950:
+    elif segurar[pygame.K_d] and hp1 < 950 and not(segurar[pygame.K_a]):
         sprite_atual = Cavaleiro_UM_correndo_direita
         Cavaleiro1_esquerda=False
         cavaleiro1_direita=True
