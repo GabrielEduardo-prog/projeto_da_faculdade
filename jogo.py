@@ -29,7 +29,7 @@ sprite=pygame.image.load("sprites_parados.png")
 # plataforma_img = pygame.image.load("plataforma.png").convert_alpha()
 # plataforma_img = pygame.transform.scale(plataforma_img, (400, 50))#largura(400) altura(50)
 
-
+Cavaleiro_UM_parado_esquerda=pygame.image.load("sprite_parado_esquerdo.png")
 Cavaleiro_UM_atacando_esquerda=pygame.image.load("_Attack_recortado_esquerda.png")
 Cavaleiro_UM_atacando_direita=pygame.image.load("_Attack_recortado.png")
 Cavaleiro_UM_correndo_direita=pygame.image.load("_Run_recortado.png").convert_alpha()
@@ -48,12 +48,13 @@ largura_correndo_direita = Cavaleiro_UM_correndo_direita.get_width()  *2
 altura_correndo_direita = Cavaleiro_UM_correndo_direita.get_height() * 2
 largura_correndo_esquerda = Cavaleiro_UM_correndo_esquerda.get_width()  *2
 altura_correndo_esquerda = Cavaleiro_UM_correndo_esquerda.get_height() * 2
-
-
+largura_cavaleiro1_parado_esquerda=Cavaleiro_UM_parado_esquerda.get_width() * 2
+altura_cavaleiro1_parado_esquerda=Cavaleiro_UM_parado_esquerda.get_height() * 2
 Cavaleiro_UM_correndo_esquerda = pygame.transform.scale(Cavaleiro_UM_correndo_esquerda, (largura_correndo_esquerda, altura_correndo_esquerda))
 Cavaleiro_UM_correndo_direita = pygame.transform.scale(Cavaleiro_UM_correndo_direita, (largura_correndo_direita, altura_correndo_direita))
 Cavaleiro_UM_pulando = pygame.transform.scale(Cavaleiro_UM_pulando, (largura_pulando, altura_pulando))
 Cavaleiro_UM_parado = pygame.transform.scale(Cavaleiro_UM_parado, (largura, altura))
+Cavaleiro_UM_parado_esquerda= pygame.transform.scale(Cavaleiro_UM_parado_esquerda,(largura_cavaleiro1_parado_esquerda,altura_cavaleiro1_parado_esquerda))
 Cavaleiro_UM_pulando_esquerda= pygame.transform.scale(Cavaleiro_UM_pulando_esquerda,(largura_pulando_esquerda, altura_pulando_esquerda))
 astr1=Cavaleiro_UM_parado
 mask_astro1 = pygame.mask.from_surface(astr1)
@@ -196,7 +197,10 @@ while janela_aberta:
     #         x_sprite=0
 
     # ESCOLHA DO SPRITE 
-    sprite_atual = Cavaleiro_UM_parado 
+    if cavaleiro1_direita==True:
+        sprite_atual = Cavaleiro_UM_parado
+    if Cavaleiro1_esquerda==True:
+        sprite_atual = Cavaleiro_UM_parado_esquerda 
     if pulando1:
         if cavaleiro1_direita:
             sprite_atual = Cavaleiro_UM_pulando
