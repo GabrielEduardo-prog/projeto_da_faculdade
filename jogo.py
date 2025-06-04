@@ -33,7 +33,7 @@ cavaleiro2_direita = True
 cavaleiro2_esquerda = False
 
 
-# Display e blackground
+# Display, blackground e som
 janela=pygame.display.set_mode((1000,600))
 background=pygame.image.load("sdf3.jpg")
 background_remodelado=pygame.transform.scale(background,(1000,600))
@@ -41,7 +41,8 @@ fonte_m = pygame.font.SysFont("Arial", 20)
 sprite2=pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
 sprite=pygame.image.load("sprites_parados.png")
 filtro = pygame.Surface((1000, 600))
-
+Soundtrack= pygame.mixer.music.load("Mahabre_Streets.ogg")
+pygame.mixer.music.play(-1)
 # Cavaleiro UM; Player UM
 Cavaleiro_UM_parado_esquerda=pygame.image.load("sprite_parado_esquerdo.png")
 Cavaleiro_UM_atacando_esquerda=pygame.image.load("_Attack_recortado_esquerda.png")
