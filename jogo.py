@@ -1,15 +1,15 @@
 import pygame
 pygame.init()
 pygame.display.set_caption("Run to the moon!")
+# cavaleiro1
 hp1, vp1 = 300, 450
-hp2, vp2= 200, 500
 vel = 15
 gravidade = 1
-pulo1, pulo2 = 12, 15
-vel_Y1, vel_Y2 = 0, pulo2
-pulando, pulando2 = False, False
-caindo1,caindo2=False,False
-atacando1,atacando2=False,False
+pulo1 = 12
+vel_Y1= 0
+pulando= False
+caindo1=False
+atacando1=False
 x_sprite=0
 pulando1 = False
 chao=450
@@ -18,18 +18,29 @@ Cavaleiro1_esquerda=False
 cavaleiro1_direita=True
 tempo_ataque=0
 #plataforma_x, plataforma_y = -10, 400 #posição
+# Cavaleiro DOIS; Player DOIS
+hp2, vp2 = 500, 450
+vel2 = 15
+gravidade2 = 1
+forca_pulo2 = 15
+vel_Y2 = 0
+pulando2 = False
+caindo2 = False
+atacando2 = False
+x_sprite2 = 0
+cavaleiro2_direita = True
+cavaleiro2_esquerda = False
 
 
-
-
+# Display e blackground
 janela=pygame.display.set_mode((1000,600))
 background=pygame.image.load("sdf3.jpg")
 background_remodelado=pygame.transform.scale(background,(1000,600))
 fonte_m = pygame.font.SysFont("Arial", 20)
+sprite2=pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
 sprite=pygame.image.load("sprites_parados.png")
-# plataforma_img = pygame.image.load("plataforma.png").convert_alpha()
-# plataforma_img = pygame.transform.scale(plataforma_img, (400, 50))#largura(400) altura(50)
 
+# Cavaleiro UM; Player UM
 Cavaleiro_UM_parado_esquerda=pygame.image.load("sprite_parado_esquerdo.png")
 Cavaleiro_UM_atacando_esquerda=pygame.image.load("_Attack_recortado_esquerda.png")
 Cavaleiro_UM_atacando_direita=pygame.image.load("_Attack_recortado.png")
@@ -56,13 +67,10 @@ largura_cavaleiro1_caindo=Cavaleiro_UM_caindo.get_width() * 2
 altura_cavaleiro1_caindo=Cavaleiro_UM_caindo.get_height() * 2
 largura_cavaleiro1_caindo_esquerda=Cavaleiro_UM_caindo_esquerda.get_width() * 2
 altura_cavaleiro1_caindo_esquerda=Cavaleiro_UM_caindo_esquerda.get_height() * 2
-
 altura_cavaleiro1_atacando_direita=Cavaleiro_UM_atacando_direita.get_width()*2
 largura_cavaleiro1_atacando_direita=Cavaleiro_UM_atacando_direita.get_height()*2
-
 altura_cavaleiro1_atacando_esquerda=Cavaleiro_UM_atacando_esquerda.get_width()*2
 largura_cavaleiro1_atacando_esquerda=Cavaleiro_UM_atacando_esquerda.get_height()*2
-
 Cavaleiro_UM_correndo_esquerda = pygame.transform.scale(Cavaleiro_UM_correndo_esquerda, (largura_correndo_esquerda, altura_correndo_esquerda))
 Cavaleiro_UM_correndo_direita = pygame.transform.scale(Cavaleiro_UM_correndo_direita, (largura_correndo_direita, altura_correndo_direita))
 Cavaleiro_UM_pulando = pygame.transform.scale(Cavaleiro_UM_pulando, (largura_pulando, altura_pulando))
@@ -75,6 +83,38 @@ Cavaleiro_UM_atacando_direita=pygame.transform.scale(Cavaleiro_UM_atacando_direi
 Cavaleiro_UM_atacando_esquerda=pygame.transform.scale(Cavaleiro_UM_atacando_esquerda,(largura_cavaleiro1_atacando_esquerda,altura_cavaleiro1_atacando_esquerda))
 astr1=Cavaleiro_UM_parado
 mask_astro1 = pygame.mask.from_surface(astr1)
+
+# Cavaleiro2
+Cavaleiro_DOIS_parado_direita = pygame.image.load("_Idle_2_parado_recortado.png")
+Cavaleiro_DOIS_parado_esquerda = pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
+Cavaleiro_DOIS_correndo_direita = pygame.image.load("_Run2_recortado.png")
+Cavaleiro_DOIS_correndo_esquerda = pygame.image.load("_Run2_recortado_esquerda.png")
+Cavaleiro_DOIS_pulando_direita = pygame.image.load("_Jump2.png")
+Cavaleiro_DOIS_pulando_esquerda = pygame.image.load("_Jump2_esquerda.png")
+
+# Dimensões do Cavaleiro 2
+largura_cavaleiro2_parado = Cavaleiro_DOIS_parado_direita.get_width() * 2
+altura_cavaleiro2_parado = Cavaleiro_DOIS_parado_direita.get_height() * 2
+largura_cavaleiro2_parado_esquerda = Cavaleiro_DOIS_parado_esquerda.get_width() * 2
+altura_cavaleiro2_parado_esquerda = Cavaleiro_DOIS_parado_esquerda.get_height() * 2
+largura_cavaleiro2_pulando_direita = Cavaleiro_DOIS_pulando_direita.get_width() * 2
+altura_cavaleiro2_pulando_direita = Cavaleiro_DOIS_pulando_direita.get_height() * 2
+largura_cavaleiro2_pulando_esquerda = Cavaleiro_DOIS_pulando_esquerda.get_width() * 2
+altura_cavaleiro2_pulando_esquerda = Cavaleiro_DOIS_pulando_esquerda.get_height() * 2
+largura_cavaleiro2_correndo_direita = Cavaleiro_DOIS_correndo_direita.get_width() * 2
+altura_cavaleiro2_correndo_direita = Cavaleiro_DOIS_correndo_direita.get_height() * 2
+largura_cavaleiro2_correndo_esquerda = Cavaleiro_DOIS_correndo_esquerda.get_width() * 2
+altura_cavaleiro2_correndo_esquerda = Cavaleiro_DOIS_correndo_esquerda.get_height() * 2
+
+# Redimensionamento do cavaleiro2
+Cavaleiro_DOIS_parado_direita = pygame.transform.scale(Cavaleiro_DOIS_parado_direita, (largura_cavaleiro2_parado, altura_cavaleiro2_parado))
+Cavaleiro_DOIS_parado_esquerda = pygame.transform.scale(Cavaleiro_DOIS_parado_esquerda, (largura_cavaleiro2_parado_esquerda, altura_cavaleiro2_parado_esquerda))
+Cavaleiro_DOIS_pulando_direita = pygame.transform.scale(Cavaleiro_DOIS_pulando_direita, (largura_cavaleiro2_pulando_direita, altura_cavaleiro2_pulando_direita))
+Cavaleiro_DOIS_pulando_esquerda = pygame.transform.scale(Cavaleiro_DOIS_pulando_esquerda, (largura_cavaleiro2_pulando_esquerda, altura_cavaleiro2_pulando_esquerda))
+Cavaleiro_DOIS_correndo_direita = pygame.transform.scale(Cavaleiro_DOIS_correndo_direita, (largura_cavaleiro2_correndo_direita, altura_cavaleiro2_correndo_direita))
+Cavaleiro_DOIS_correndo_esquerda = pygame.transform.scale(Cavaleiro_DOIS_correndo_esquerda, (largura_cavaleiro2_correndo_esquerda, altura_cavaleiro2_correndo_esquerda))
+
+
 relogio = pygame.time.Clock()
 janela_aberta=True
 #INTERFACE 
@@ -82,6 +122,8 @@ def tela_inicial():
     fonte = pygame.font.SysFont("arial", 60)
     esperando = True
 
+    botao = pygame.Rect(250, 300, 450, 100)
+    
     while esperando:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -92,7 +134,6 @@ def tela_inicial():
                     esperando = False
 
        
-        botao = pygame.Rect(250, 300, 450, 100)
 
         
         if botao.collidepoint(pygame.mouse.get_pos()):
@@ -146,32 +187,23 @@ while janela_aberta:
 
     segurar = pygame.key.get_pressed()
 
-    # Variáveis de movimento e estado
-    if segurar[pygame.K_a] and hp1 > 0 and not(segurar[pygame.K_d]) and not(pulando1):
+    # Movimento cavaleiro1
+    if segurar[pygame.K_a] and hp1 > 0 and not(segurar[pygame.K_d]):
         hp1 -= vel
         x_sprite += 1
         if x_sprite > 9:
             x_sprite = 0
 
-    if segurar[pygame.K_d] and hp1 < 950 and not(segurar[pygame.K_a]) and not(pulando1):
+    if segurar[pygame.K_d] and hp1 < 950 and not(segurar[pygame.K_a]):
         hp1 += vel
         x_sprite += 1
         if x_sprite > 9:
             x_sprite = 0
 
-    if segurar[pygame.K_w] and not pulando1 and vp1 >= chao:
+    if segurar[pygame.K_w] and not(pulando1):
         vel_Y1 = -forca_pulo
         pulando1 = True
-        # Contagem do ataque
-        
-    if tempo_ataque > 0:
-        tempo_ataque -= 1
-    else:
-        atacando1 = False
 
-    if segurar[pygame.K_s] and not(segurar[pygame.K_d]) and not(segurar[pygame.K_a]):
-        atacando1=True
-        tempo_ataque=10
     #PULO ( se VARIAVEL DE CAIR= caindo1)
     if pulando1: 
         vp1 += vel_Y1
@@ -183,6 +215,36 @@ while janela_aberta:
             vp1 = chao
             vel_Y1 = 0
             pulando1 = False
+
+    # MOVIMENTO DO CAVALEIRO 2
+    if segurar[pygame.K_LEFT] and hp2 > 0 and not(segurar[pygame.K_RIGHT]):
+        hp2 -= vel2
+        x_sprite2 += 1
+        if x_sprite2 > 9:
+            x_sprite2 = 0
+
+    if segurar[pygame.K_RIGHT] and hp2 < 950 and not(segurar[pygame.K_LEFT]):
+        hp2 += vel2
+        x_sprite2 += 1
+        if x_sprite2 > 9:
+            x_sprite2 = 0
+
+    if segurar[pygame.K_UP] and not pulando2 and vp2 >= chao:
+        vel_Y2 = -forca_pulo2
+        pulando2 = True
+
+    # PULO DO CAVALEIRO 2
+    if pulando2:
+        vp2 += vel_Y2
+        vel_Y2 += gravidade2
+        x_sprite2 += 1
+        if x_sprite2 > 2:
+            x_sprite2 = 0
+        if vp2 >= chao:
+            vp2 = chao
+            vel_Y2 = 0
+            pulando2 = False
+
                 
     # ESCOLHA DO SPRITE 
     if cavaleiro1_direita==True:
@@ -194,6 +256,14 @@ while janela_aberta:
             sprite_atual = Cavaleiro_UM_pulando
         if Cavaleiro1_esquerda:
             sprite_atual=Cavaleiro_UM_pulando_esquerda
+    
+    if pulando1:
+        if segurar[pygame.K_a]:
+            Cavaleiro1_esquerda = True
+            cavaleiro1_direita = False
+        elif segurar[pygame.K_d]:
+            cavaleiro1_direita = True
+            Cavaleiro1_esquerda = False
 
     elif segurar[pygame.K_a] and hp1 > 0 and not(segurar[pygame.K_d]):
         sprite_atual = Cavaleiro_UM_correndo_esquerda
@@ -215,9 +285,45 @@ while janela_aberta:
         x_sprite += 1
         if x_sprite > 9:
             x_sprite = 0
-     # Desenho do personagem
-    janela.blit(sprite_atual, (hp1, vp1), (x_sprite*240, 80, 100, 100))
+            
 
+
+
+        # ESCOLHA DO SPRITE DO CAVALEIRO 2
+    if cavaleiro2_direita:
+        sprite_atual2 = Cavaleiro_DOIS_parado_direita
+    if cavaleiro2_esquerda:
+        sprite_atual2 = Cavaleiro_DOIS_parado_esquerda
+    if pulando2:
+        if cavaleiro2_direita:
+            sprite_atual2 = Cavaleiro_DOIS_pulando_direita
+        if cavaleiro2_esquerda:
+            sprite_atual2 = Cavaleiro_DOIS_pulando_esquerda
+    
+    if pulando2:
+        if cavaleiro2_direita:
+            sprite_atual2 = Cavaleiro_DOIS_pulando_direita
+        elif cavaleiro2_esquerda:
+            sprite_atual2 = Cavaleiro_DOIS_pulando_esquerda
+
+    elif segurar[pygame.K_LEFT] and hp2 > 0 and not(segurar[pygame.K_RIGHT]):
+        sprite_atual2 = Cavaleiro_DOIS_correndo_esquerda
+        cavaleiro2_esquerda = True
+        cavaleiro2_direita = False
+
+    elif segurar[pygame.K_RIGHT] and hp2 < 950 and not(segurar[pygame.K_LEFT]):
+        sprite_atual2 = Cavaleiro_DOIS_correndo_direita
+        cavaleiro2_esquerda = False
+        cavaleiro2_direita = True
+
+    else:
+        x_sprite2 += 1
+        if x_sprite2 > 9:
+            x_sprite2 = 0
+
+     # Desenho do personagem 1/2
+    janela.blit(sprite_atual, (hp1, vp1), (x_sprite*240, 80, 100, 100))
+    janela.blit(sprite_atual2, (hp2, vp2), (x_sprite2*240, 80, 100, 100))
     # LIMITES DE TELA
     vp1 = max(0, min(vp1, 500))
     hp2 = max(0, min(hp2, 942))
