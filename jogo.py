@@ -18,6 +18,7 @@ forca_pulo=15
 Cavaleiro1_esquerda=False
 cavaleiro1_direita=True
 tempo_ataque=0
+barulho_de_cair2=False
 #plataforma_x, plataforma_y = -10, 400 #posição
 # Cavaleiro DOIS; Player DOIS
 hp2, vp2 = 500, 450
@@ -38,7 +39,9 @@ Soundtrack.play(loops=-1)
 andando_som=pygame.mixer.Sound("running-on-concrete-268478.mp3")
 andando_canal=pygame.mixer.Channel(1)
 andando_canal2=pygame.mixer.Channel(2)
-
+caindo_no_chao= pygame.mixer.Sound("thump-105302.mp3")  
+caindo_no_chao_canal=pygame.mixer.Channel(3)
+caindo_no_chao_canal2=pygame.mixer.Channel(4)  
 # Display, blackground
 janela=pygame.display.set_mode((1000,600))
 background=pygame.image.load("sdf3.jpg")
@@ -278,6 +281,8 @@ while janela_aberta:
             vp2 = chao
             vel_Y2 = 0
             pulando2 = False
+            barulho_de_cair2=True
+            barulho_de_cair2=False
 
                 
     # ESCOLHA DO SPRITE 
@@ -365,22 +370,35 @@ while janela_aberta:
     # Sons do personagem 1
     teclas = pygame.key.get_pressed()
 
-    andando = (teclas[pygame.K_a] and not teclas[pygame.K_d]) or (teclas[pygame.K_d] and not teclas[pygame.K_a]) 
+    andando = ((teclas[pygame.K_a] and not teclas[pygame.K_d]) or (teclas[pygame.K_d] and not teclas[pygame.K_a])) and not pulando1
 
     if andando:
         if not andando_canal.get_busy():
-            andando_canal.play(andando_som, loops=-1)
+            andando_canal.play(andando_som, loops=1)
     else:
         andando_canal.stop()
+    
+    if pulando1:
+        if not caindo_no_chao_canal.get_busy():
+            caindo_no_chao_canal.play(caindo_no_chao, loops=1)
+    else:
+        caindo_no_chao_canal.stop()
 
-    # Som do personagem 1
-    andando2 = (teclas[pygame.K_LEFT] and not teclas[pygame.K_RIGHT]) or (teclas[pygame.K_RIGHT] and not teclas[pygame.K_LEFT]) 
+    # Som do personagem 2
+    andando2 = ((teclas[pygame.K_LEFT] and not teclas[pygame.K_RIGHT]) or (teclas[pygame.K_RIGHT] and not teclas[pygame.K_LEFT])) and not pulando2 
 
     if andando2:
         if not andando_canal2.get_busy():
             andando_canal2.play(andando_som, loops=-1)
     else:
         andando_canal2.stop()
+
+
+    if pulando2:
+        if not caindo_no_chao_canal2.get_busy():
+            caindo_no_chao_canal2.play(caindo_no_chao, loops=1)
+    else:
+        caindo_no_chao_canal2.stop()
 
     # LIMITES DE TELA
     vp1 = max(0, min(vp1, 500))
