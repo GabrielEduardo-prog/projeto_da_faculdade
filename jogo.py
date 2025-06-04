@@ -32,8 +32,14 @@ x_sprite2 = 0
 cavaleiro2_direita = True
 cavaleiro2_esquerda = False
 
+# SOM
+Soundtrack= pygame.mixer.Sound("Mahabre_Streets.ogg")
+Soundtrack.play(loops=-1)
+andando_som=pygame.mixer.Sound("running-on-concrete-268478.mp3")
+andando_canal=pygame.mixer.Channel(1)
+andando_canal2=pygame.mixer.Channel(2)
 
-# Display, blackground e som
+# Display, blackground
 janela=pygame.display.set_mode((1000,600))
 background=pygame.image.load("sdf3.jpg")
 background_remodelado=pygame.transform.scale(background,(1000,600))
@@ -41,8 +47,7 @@ fonte_m = pygame.font.SysFont("Arial", 20)
 sprite2=pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
 sprite=pygame.image.load("sprites_parados.png")
 filtro = pygame.Surface((1000, 600))
-Soundtrack= pygame.mixer.music.load("Mahabre_Streets.ogg")
-pygame.mixer.music.play(-1)
+
 # Cavaleiro UM; Player UM
 Cavaleiro_UM_parado_esquerda=pygame.image.load("sprite_parado_esquerdo.png")
 Cavaleiro_UM_atacando_esquerda=pygame.image.load("_Attack_recortado_esquerda.png")
@@ -298,10 +303,13 @@ while janela_aberta:
         Cavaleiro1_esquerda=True
         cavaleiro1_direita=False
 
+
+
     elif segurar[pygame.K_d] and hp1 < 950 and not(segurar[pygame.K_a]):
         sprite_atual = Cavaleiro_UM_correndo_direita
         Cavaleiro1_esquerda=False
         cavaleiro1_direita=True
+
 
     elif atacando1==True:
         if cavaleiro1_direita:
@@ -352,6 +360,26 @@ while janela_aberta:
      # Desenho do personagem 1/2
     janela.blit(sprite_atual, (hp1, vp1), (x_sprite*240, 80, 100, 100))
     janela.blit(sprite_atual2, (hp2, vp2), (x_sprite2*240, 80, 100, 100))
+
+    # Sons do personagem 1
+    teclas = pygame.key.get_pressed()
+
+    andando = (teclas[pygame.K_a] and not teclas[pygame.K_d]) or (teclas[pygame.K_d] and not teclas[pygame.K_a]) 
+
+    if andando:
+        if not andando_canal.get_busy():
+            andando_canal.play(andando_som, loops=-1)
+    else:
+        andando_canal.stop()
+
+    # Som do personagem 1
+    andando2 = (teclas[pygame.K_LEFT] and not teclas[pygame.K_RIGHT]) or (teclas[pygame.K_RIGHT] and not teclas[pygame.K_LEFT]) 
+
+    if andando2:
+        if not andando_canal2.get_busy():
+            andando_canal2.play(andando_som, loops=-1)
+    else:
+        andando_canal2.stop()
     # LIMITES DE TELA
     vp1 = max(0, min(vp1, 500))
     hp2 = max(0, min(hp2, 942))

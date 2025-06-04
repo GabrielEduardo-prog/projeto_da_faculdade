@@ -1,2 +1,3 @@
-import winsound
-winsound.PlaySound('Mahabre_Streets.ogg', winsound.SND_LOOP + winsound.SND_ASYNC)
+import pygame
+Soundtrack= pygame.mixer.music.load("Mahabre_Streets.ogg")
+pygame.mixer.music.play(-1)
