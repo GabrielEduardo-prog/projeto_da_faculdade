@@ -1,4 +1,5 @@
 import pygame
+from PIL import Image
 pygame.init()
 pygame.display.set_caption("Run to the moon!")
 # cavaleiro1
@@ -117,13 +118,32 @@ Cavaleiro_DOIS_correndo_esquerda = pygame.transform.scale(Cavaleiro_DOIS_corrend
 
 relogio = pygame.time.Clock()
 janela_aberta=True
-#INTERFACE 
+#Carregar do Gif
+def carregar_gif_para_frames(caveira):
+    gif = Image.open(caveira)
+    frames = []
+    try:
+        while True:
+            frame = gif.convert("RGBA")
+            modo = frame.mode
+            tamanho = frame.size
+            dados = frame.tobytes()
+            py_image = pygame.image.fromstring(dados, tamanho, modo)
+            frames.append(py_image)
+            gif.seek(gif.tell() + 1)
+    except EOFError:
+        pass
+    return frames
+
+frames_gif = carregar_gif_para_frames("cov.gif")
+#Tela inicial 
 def tela_inicial():
     fonte = pygame.font.SysFont("arial", 60)
     esperando = True
+    frame_atual = 0
+    tempo_ultimo_frame = pygame.time.get_ticks()
+    intervalo_frame = 50 
 
-    botao = pygame.Rect(250, 300, 450, 100)
-    
     while esperando:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -133,16 +153,22 @@ def tela_inicial():
                 if botao.collidepoint(evento.pos):
                     esperando = False
 
-       
+        botao = pygame.Rect(25, 30, 450, 100)
 
         
+        agora = pygame.time.get_ticks()
+        if agora - tempo_ultimo_frame > intervalo_frame:
+            frame_atual = (frame_atual + 1) % len(frames_gif)
+            tempo_ultimo_frame = agora
+
         if botao.collidepoint(pygame.mouse.get_pos()):
-            texto = fonte.render("click para jogar", True, (0, 0, 200)) #azul escuro
+            texto = fonte.render("New Game", True, (0, 0, 200))
         else:
-            texto = fonte.render("click para jogar", True, (0, 0, 0)) #preto
+            texto = fonte.render("New Game", True, (200, 0, 0))
 
         janela.blit(background, (0, 0))
-        janela.blit(texto, (botao.x + 50, botao.y + 20)) #desenha o texto sem retângulo
+        janela.blit(frames_gif[frame_atual], (0, 0))  
+        janela.blit(texto, (botao.x + 5, botao.y + 2))
         pygame.display.update()
 def menu_jogo():
     fonte = pygame.font.SysFont("Arial", 60)
@@ -171,7 +197,7 @@ def menu_jogo():
         janela.blit(continuar, (botao.x + 40, botao.y + 10))
         pygame.display.update()
 
-#TELA INICIAL PARA RODAR
+#RODAR
 tela_inicial()
 
 #LOOP DO JOGO 
