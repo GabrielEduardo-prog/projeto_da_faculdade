@@ -33,7 +33,7 @@ cavaleiro2_direita = True
 cavaleiro2_esquerda = False
 
 # SOM
-Soundtrack= pygame.mixer.Sound("Mahabre_Streets.ogg")
+Soundtrack= pygame.mixer.Sound("horror-background-atmosphere-156462.mp3")
 Soundtrack.play(loops=-1)
 andando_som=pygame.mixer.Sound("running-on-concrete-268478.mp3")
 andando_canal=pygame.mixer.Channel(1)
@@ -380,6 +380,7 @@ while janela_aberta:
             andando_canal2.play(andando_som, loops=-1)
     else:
         andando_canal2.stop()
+
     # LIMITES DE TELA
     vp1 = max(0, min(vp1, 500))
     hp2 = max(0, min(hp2, 942))
