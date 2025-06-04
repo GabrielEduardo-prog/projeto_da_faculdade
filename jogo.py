@@ -195,15 +195,16 @@ def menu_jogo():
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_x:
                 esperando = False
 
-        cor = (255, 255, 255)
+        
         if botao.collidepoint(pygame.mouse.get_pos()):
-            cor = (0, 0, 110)
+            continuar = fonte.render("Continuar", True, (0, 0,200))
+        else:
+            continuar = fonte.render("Continuar", True, (0, 0,0 ))
+        
         janela.blit(background, (0, 0))
         janela.blit(texto, (400, 200))
-        pygame.draw.rect(janela, cor, botao, border_radius=15)
         janela.blit(continuar, (botao.x + 40, botao.y + 10))
         pygame.display.update()
-
 #RODAR
 tela_inicial()
 
