@@ -356,8 +356,8 @@ while janela_aberta:
     vp2= max(0, min(vp2, 500))
 
     # Botão de pausa
-    botao = pygame.Rect(800, 10, 200, 40)
-    pygame.draw.rect(janela, (255, 0, 0), botao, border_radius=10)
+    botao = pygame.Rect(30, 10, 200, 40)
+    pygame.draw.rect(janela, (0, 0, 255), botao, border_radius=10)
     fonte = pygame.font.SysFont("Arial", 24)
     texto = fonte.render("(X) PARA PAUSAR", True, (255, 255, 255))
     janela.blit(texto, (botao.x + 10, botao.y + 5))
