@@ -40,6 +40,7 @@ background_remodelado=pygame.transform.scale(background,(1000,600))
 fonte_m = pygame.font.SysFont("Arial", 20)
 sprite2=pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
 sprite=pygame.image.load("sprites_parados.png")
+filtro = pygame.Surface((1000, 600))
 
 # Cavaleiro UM; Player UM
 Cavaleiro_UM_parado_esquerda=pygame.image.load("sprite_parado_esquerdo.png")
@@ -362,6 +363,9 @@ while janela_aberta:
     texto = fonte.render("(X) PARA PAUSAR", True, (255, 255, 255))
     janela.blit(texto, (botao.x + 10, botao.y + 5))
 
+    filtro.fill((0, 0, 30))
+    filtro.set_alpha(120)
+    janela.blit(filtro, (0, 0))
     pygame.display.update()
 
 pygame.quit()
