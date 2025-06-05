@@ -95,6 +95,7 @@ Cavaleiro_UM_atacando_esquerda=pygame.transform.scale(Cavaleiro_UM_atacando_esqu
 astr1=Cavaleiro_UM_parado
 mask_astro1 = pygame.mask.from_surface(astr1)
 
+
 # Cavaleiro2
 Cavaleiro_DOIS_parado_direita = pygame.image.load("_Idle_2_parado_recortado.png")
 Cavaleiro_DOIS_parado_esquerda = pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
@@ -124,7 +125,8 @@ Cavaleiro_DOIS_pulando_direita = pygame.transform.scale(Cavaleiro_DOIS_pulando_d
 Cavaleiro_DOIS_pulando_esquerda = pygame.transform.scale(Cavaleiro_DOIS_pulando_esquerda, (largura_cavaleiro2_pulando_esquerda, altura_cavaleiro2_pulando_esquerda))
 Cavaleiro_DOIS_correndo_direita = pygame.transform.scale(Cavaleiro_DOIS_correndo_direita, (largura_cavaleiro2_correndo_direita, altura_cavaleiro2_correndo_direita))
 Cavaleiro_DOIS_correndo_esquerda = pygame.transform.scale(Cavaleiro_DOIS_correndo_esquerda, (largura_cavaleiro2_correndo_esquerda, altura_cavaleiro2_correndo_esquerda))
-
+astr2 = Cavaleiro_DOIS_parado_direita
+mask_astro2 = pygame.mask.from_surface(astr2)
 
 relogio = pygame.time.Clock()
 janela_aberta=True
@@ -146,6 +148,7 @@ def carregar_gif_para_frames(caveira):
     return frames
 
 frames_gif = carregar_gif_para_frames("cov.gif")
+frames_gif_menu = carregar_gif_para_frames("estrela.gif")
 #Tela inicial 
 def tela_inicial():
     fonte = pygame.font.SysFont("arial", 60)
@@ -181,33 +184,64 @@ def tela_inicial():
         janela.blit(texto, (botao.x + 5, botao.y + 2))
         pygame.display.update()
 def menu_jogo():
-    fonte = pygame.font.SysFont("Arial", 60)
-    texto = fonte.render("PAUSADO", True, (255, 255, 0))
-    continuar = fonte.render("Continuar", True, (0, 0, 0))
-    botao = pygame.Rect(350, 350, 300, 80)
+    fonte_titulo = pygame.font.SysFont("Arial",70, bold=True)
+    fonte_opcao = pygame.font.SysFont("Arial", 40)
+    titulo = fonte_titulo.render("PAUSADO", True, (45, 0, 0))
+
+    opcoes = ["Continuar", "Reiniciar", "Sair"]
+    botoes = [
+        pygame.Rect(350, 250, 300, 60),
+        pygame.Rect(350, 330, 300, 60),
+        pygame.Rect(350, 410, 300, 60)
+    ]
 
     esperando = True
+    frame_atual = 0
+    tempo_ultimo_frame = pygame.time.get_ticks()
+    intervalo_frame = 50  # milissegundos entre frames do gif
+
     while esperando:
+        # frame do gif do menu
+        agora = pygame.time.get_ticks()
+        if agora - tempo_ultimo_frame > intervalo_frame:
+            frame_atual = (frame_atual + 1) % len(frames_gif_menu)
+            tempo_ultimo_frame = agora
+
+        janela.blit(frames_gif_menu[frame_atual], (0, 0))  #GIF do menu no fundo
+        janela.blit(titulo, (370, 50))
+
+        mouse_pos = pygame.mouse.get_pos()
+        for i, botao in enumerate(botoes):
+            cor = (0, 0, 200) if botao.collidepoint(mouse_pos) else (45, 0, 0)
+            pygame.draw.rect(janela, (0, 0, 0), botao, border_radius=10)
+            texto = fonte_opcao.render(opcoes[i], True, cor)
+            janela.blit(texto, (botao.x + 60, botao.y + 10))
+
+        pygame.display.update()
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                if botao.collidepoint(evento.pos):
-                    esperando = False
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_x:
                 esperando = False
-
-        
-        if botao.collidepoint(pygame.mouse.get_pos()):
-            continuar = fonte.render("Continuar", True, (0, 0,200))
-        else:
-            continuar = fonte.render("Continuar", True, (0, 0,0 ))
-        
-        janela.blit(background, (0, 0))
-        janela.blit(texto, (400, 200))
-        janela.blit(continuar, (botao.x + 40, botao.y + 10))
-        pygame.display.update()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                for i, botao in enumerate(botoes):
+                    if botao.collidepoint(evento.pos):
+                        if i == 0:  
+                            esperando = False
+                        elif i == 1:  
+                            global hp1, vp1, hp2, vp2, pulando1, pulando2, vel_Y1, vel_Y2
+                            hp1, vp1 = 300, 450
+                            hp2, vp2 = 500, 450
+                            pulando1 = False
+                            pulando2 = False
+                            vel_Y1 = 0
+                            vel_Y2 = 0
+                            esperando = False
+                        elif i == 2:  # Sair
+                            pygame.quit()
+                            exit()
 #RODAR
 tela_inicial()
 
@@ -366,6 +400,29 @@ while janela_aberta:
      # Desenho do personagem 1/2
     janela.blit(sprite_atual, (hp1, vp1), (x_sprite*240, 80, 100, 100))
     janela.blit(sprite_atual2, (hp2, vp2), (x_sprite2*240, 80, 100, 100))
+
+    #BARRA DE VIDA EM CIMA DA CABEÇA 
+    # Personagem 1
+    vida_max1 = 100  
+    largura_barra = 60
+    altura_barra = 10
+    vida_atual1 = 100
+    largura_na_cabeça= 100
+    x_barra1 = hp1 + (largura_na_cabeça//4) - (largura_barra // 2)
+    y_barra1 = vp1 - 20
+    pygame.draw.rect(janela, (255,0,0), (x_barra1, y_barra1, largura_barra, altura_barra))  
+    pygame.draw.rect(janela, (0,255,0), (x_barra1, y_barra1, largura_barra * (vida_atual1/vida_max1), altura_barra))  # vida verde
+
+    # Personagem 2
+    vida_max2 = 100  
+    vida_atual2 = 100
+    largura_na_cabeça2 = 100  
+    x_barra2 = hp2 + (largura_na_cabeça2//4) - (largura_barra // 2)
+    y_barra2 = vp2 - 20
+    pygame.draw.rect(janela, (255,0,0), (x_barra2, y_barra2, largura_barra, altura_barra))
+    pygame.draw.rect(janela, (0,255,0), (x_barra2, y_barra2, largura_barra * (vida_atual2/vida_max2), altura_barra))
+
+    
 
     # Sons do personagem 1
     teclas = pygame.key.get_pressed()
