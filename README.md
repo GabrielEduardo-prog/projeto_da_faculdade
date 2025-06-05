@@ -1,11 +1,11 @@
 # 🏰 O Castelo
 
 Bem-vindo ao repositório do jogo **O Castelo**!  
-Um jogo simples e divertido desenvolvido em Python com as bibliotecas **Pygame** e **Pillow**.
+Um MVP simples desenvolvido em Python com as bibliotecas **Pygame** e **Pillow**.
 
 ## 🎮 Descrição
 
-Em **O Castelo**, você assume o papel de um Cavaleiro que precisa junto do seu companheiro andar e se divertir na frente do castelo assustador. O jogo apresenta gráficos simples, mecânicas básicas e tem um estilo mais dark fantasy!
+Em **O Castelo**, você e seu amigo (opcional) assumem os papeis de dois Cavaleiros na frente de um castelo. O MVP apresenta gráficos simples, mecânicas básicas e tem um estilo mais dark fantasy!
 
 
 ## ⚙️ Tecnologias Utilizadas
