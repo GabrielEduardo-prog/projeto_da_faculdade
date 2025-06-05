@@ -95,6 +95,7 @@ Cavaleiro_UM_atacando_esquerda=pygame.transform.scale(Cavaleiro_UM_atacando_esqu
 astr1=Cavaleiro_UM_parado
 mask_astro1 = pygame.mask.from_surface(astr1)
 
+
 # Cavaleiro2
 Cavaleiro_DOIS_parado_direita = pygame.image.load("_Idle_2_parado_recortado.png")
 Cavaleiro_DOIS_parado_esquerda = pygame.image.load("_Idle_2_parado_recortado_esquerda.png")
@@ -124,7 +125,8 @@ Cavaleiro_DOIS_pulando_direita = pygame.transform.scale(Cavaleiro_DOIS_pulando_d
 Cavaleiro_DOIS_pulando_esquerda = pygame.transform.scale(Cavaleiro_DOIS_pulando_esquerda, (largura_cavaleiro2_pulando_esquerda, altura_cavaleiro2_pulando_esquerda))
 Cavaleiro_DOIS_correndo_direita = pygame.transform.scale(Cavaleiro_DOIS_correndo_direita, (largura_cavaleiro2_correndo_direita, altura_cavaleiro2_correndo_direita))
 Cavaleiro_DOIS_correndo_esquerda = pygame.transform.scale(Cavaleiro_DOIS_correndo_esquerda, (largura_cavaleiro2_correndo_esquerda, altura_cavaleiro2_correndo_esquerda))
-
+astr2 = Cavaleiro_DOIS_parado_direita
+mask_astro2 = pygame.mask.from_surface(astr2)
 
 relogio = pygame.time.Clock()
 janela_aberta=True
@@ -366,6 +368,29 @@ while janela_aberta:
      # Desenho do personagem 1/2
     janela.blit(sprite_atual, (hp1, vp1), (x_sprite*240, 80, 100, 100))
     janela.blit(sprite_atual2, (hp2, vp2), (x_sprite2*240, 80, 100, 100))
+
+    #BARRA DE VIDA EM CIMA DA CABEÇA 
+    # Personagem 1
+    vida_max1 = 100  
+    largura_barra = 60
+    altura_barra = 10
+    vida_atual1 = 100
+    largura_na_cabeça= 100
+    x_barra1 = hp1 + (largura_na_cabeça//4) - (largura_barra // 2)
+    y_barra1 = vp1 - 20
+    pygame.draw.rect(janela, (255,0,0), (x_barra1, y_barra1, largura_barra, altura_barra))  
+    pygame.draw.rect(janela, (0,255,0), (x_barra1, y_barra1, largura_barra * (vida_atual1/vida_max1), altura_barra))  # vida verde
+
+    # Personagem 2
+    vida_max2 = 100  
+    vida_atual2 = 100
+    largura_na_cabeça2 = 100  
+    x_barra2 = hp2 + (largura_na_cabeça2//4) - (largura_barra // 2)
+    y_barra2 = vp2 - 20
+    pygame.draw.rect(janela, (255,0,0), (x_barra2, y_barra2, largura_barra, altura_barra))
+    pygame.draw.rect(janela, (0,255,0), (x_barra2, y_barra2, largura_barra * (vida_atual2/vida_max2), altura_barra))
+
+    
 
     # Sons do personagem 1
     teclas = pygame.key.get_pressed()
