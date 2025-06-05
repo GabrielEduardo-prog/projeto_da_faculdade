@@ -183,33 +183,55 @@ def tela_inicial():
         janela.blit(texto, (botao.x + 5, botao.y + 2))
         pygame.display.update()
 def menu_jogo():
-    fonte = pygame.font.SysFont("Arial", 60)
-    texto = fonte.render("PAUSADO", True, (255, 255, 0))
-    continuar = fonte.render("Continuar", True, (0, 0, 0))
-    botao = pygame.Rect(350, 350, 300, 80)
+    fonte_titulo = pygame.font.SysFont("Arial",70, bold=True)
+    fonte_opcao = pygame.font.SysFont("Arial", 40)
+    titulo = fonte_titulo.render("PAUSADO", True, (45, 0, 0))
+
+    opcoes = ["Continuar", "Reiniciar", "Sair"]
+    botoes = [
+        pygame.Rect(350, 250, 300, 60),
+        pygame.Rect(350, 330, 300, 60),
+        pygame.Rect(350, 410, 300, 60)
+    ]
 
     esperando = True
     while esperando:
+        janela.blit(background, (0, 0))
+        janela.blit(titulo, (370, 50))
+
+        mouse_pos = pygame.mouse.get_pos()
+        for i, botao in enumerate(botoes):
+            cor = (0, 0, 200) if botao.collidepoint(mouse_pos) else (45, 0, 0)
+            pygame.draw.rect(janela, (0, 0, 0), botao, border_radius=10)
+            texto = fonte_opcao.render(opcoes[i], True, cor)
+            janela.blit(texto, (botao.x + 60, botao.y + 10))
+
+        pygame.display.update()
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                if botao.collidepoint(evento.pos):
-                    esperando = False
             if evento.type == pygame.KEYDOWN and evento.key == pygame.K_x:
                 esperando = False
-
-        
-        if botao.collidepoint(pygame.mouse.get_pos()):
-            continuar = fonte.render("Continuar", True, (0, 0,200))
-        else:
-            continuar = fonte.render("Continuar", True, (0, 0,0 ))
-        
-        janela.blit(background, (0, 0))
-        janela.blit(texto, (400, 200))
-        janela.blit(continuar, (botao.x + 40, botao.y + 10))
-        pygame.display.update()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                for i, botao in enumerate(botoes):
+                    if botao.collidepoint(evento.pos):
+                        if i == 0:  
+                            esperando = False
+                        elif i == 1:  
+                            
+                            global hp1, vp1, hp2, vp2, pulando1, pulando2, vel_Y1, vel_Y2
+                            hp1, vp1 = 300, 450
+                            hp2, vp2 = 500, 450
+                            pulando1 = False
+                            pulando2 = False
+                            vel_Y1 = 0
+                            vel_Y2 = 0
+                            esperando = False
+                        elif i == 2:  # Sair
+                            pygame.quit()
+                            exit()
 #RODAR
 tela_inicial()
 
