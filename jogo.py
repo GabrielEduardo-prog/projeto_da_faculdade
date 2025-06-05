@@ -1,7 +1,7 @@
 import pygame
 from PIL import Image
 pygame.init()
-pygame.display.set_caption("Run to the moon!")
+pygame.display.set_caption("O Castelo")
 # cavaleiro1
 hp1, vp1 = 300, 450
 vel = 15
