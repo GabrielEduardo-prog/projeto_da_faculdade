@@ -148,6 +148,7 @@ def carregar_gif_para_frames(caveira):
     return frames
 
 frames_gif = carregar_gif_para_frames("cov.gif")
+frames_gif_menu = carregar_gif_para_frames("estrela.gif")
 #Tela inicial 
 def tela_inicial():
     fonte = pygame.font.SysFont("arial", 60)
@@ -195,8 +196,18 @@ def menu_jogo():
     ]
 
     esperando = True
+    frame_atual = 0
+    tempo_ultimo_frame = pygame.time.get_ticks()
+    intervalo_frame = 50  # milissegundos entre frames do gif
+
     while esperando:
-        janela.blit(background, (0, 0))
+        # frame do gif do menu
+        agora = pygame.time.get_ticks()
+        if agora - tempo_ultimo_frame > intervalo_frame:
+            frame_atual = (frame_atual + 1) % len(frames_gif_menu)
+            tempo_ultimo_frame = agora
+
+        janela.blit(frames_gif_menu[frame_atual], (0, 0))  #GIF do menu no fundo
         janela.blit(titulo, (370, 50))
 
         mouse_pos = pygame.mouse.get_pos()
@@ -220,7 +231,6 @@ def menu_jogo():
                         if i == 0:  
                             esperando = False
                         elif i == 1:  
-                            
                             global hp1, vp1, hp2, vp2, pulando1, pulando2, vel_Y1, vel_Y2
                             hp1, vp1 = 300, 450
                             hp2, vp2 = 500, 450
