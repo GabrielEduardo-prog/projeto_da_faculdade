@@ -19,4 +19,8 @@ Em **O Castelo**, você assume o papel de um Cavaleiro que precisa junto do seu 
 1. **Clone o repositório:**
    ```bash
    git clone https://github.com/GabrielEduardo-prog/projeto_da_faculdade
-   
+2. **Instale as bibliotecas**
+   ```bash
+   No terminal instale as bibliotecas pygame e pillow:
+   -pip install pygame e tecle enter
+   -pip install pillow e tecle enter
